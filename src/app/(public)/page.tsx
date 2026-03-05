@@ -1,5 +1,26 @@
-const Product = () => {
-  return <div>ok</div>;
-};
+import { getCategories } from "@/src/services/category-service";
+import { getProducts } from "@/src/services/product-service";
 
-export default Product;
+export default async function HomePage() {
+  const { products } = await getProducts({
+    page: 1,
+    limit: 8,
+  });
+
+  const categories = await getCategories();
+
+  return (
+    <main className="space-y-16 p-8">
+      <div>
+        {categories.map((category) => (
+          <div key={category.id}>{category.name}</div>
+        ))}
+      </div>
+      <div>
+        {products.map((product) => (
+          <div key={product.id}>{product.name}</div>
+        ))}
+      </div>
+    </main>
+  );
+}
