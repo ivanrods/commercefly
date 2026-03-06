@@ -1,3 +1,4 @@
+import { CarouselBanners } from "@/src/components/layout/carousel-banners";
 import { getCategories } from "@/src/services/category-service";
 import { getProducts } from "@/src/services/product-service";
 
@@ -10,7 +11,8 @@ export default async function HomePage() {
   const categories = await getCategories();
 
   return (
-    <main className="space-y-16 p-8">
+    <main className="space-y-16 py-4 px-16">
+      <CarouselBanners />
       <div>
         {categories.map((category) => (
           <div key={category.id}>{category.name}</div>
