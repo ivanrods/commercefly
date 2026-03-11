@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -5,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { useCartStore } from "@/src/store/cart-store";
 import { Product } from "@/src/types/product-type";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -16,6 +18,7 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, id }: ProductCardProps) {
+  const addItem = useCartStore((state) => state.addItem);
   return (
     <Card>
       <Link href={`/product/${id}`}>
@@ -35,13 +38,21 @@ export function ProductCard({ product, id }: ProductCardProps) {
           </p>
           <p className="mt-2 text-md md:text-lg font-bold">${product.price}</p>
         </CardContent>
-
-        <CardFooter className="pb-4">
-          <Button variant="default" className="w-full">
-            Adicionar <ShoppingCart />
-          </Button>
-        </CardFooter>
       </Link>
+      <CardFooter className="pb-4">
+        <Button
+          variant="default"
+          className="w-full"
+          onClick={() =>
+            addItem({
+              ...product,
+              quantity: 1,
+            })
+          }
+        >
+          Adicionar <ShoppingCart />
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
