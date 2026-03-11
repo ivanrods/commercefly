@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { CartDrawer } from "./cart-drawer";
 
 export function SiteHeader() {
   return (
@@ -16,6 +17,8 @@ export function SiteHeader() {
         <ShoppingBag />
         <h1 className="text-base font-medium">CommerceFly</h1>
         <div className="ml-auto flex items-center gap-2">
+          <CartDrawer />
+
           <Separator
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
