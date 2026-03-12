@@ -5,6 +5,7 @@ type CartStore = {
   items: CartItem[];
 
   addItem: (item: CartItem) => void;
+  decrementItem: (id: string) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
 };
@@ -26,6 +27,25 @@ export const useCartStore = create<CartStore>((set) => ({
 
       return {
         items: [...state.items, item],
+      };
+    }),
+
+  decrementItem: (id) =>
+    set((state) => {
+      const existing = state.items.find((i) => i.id === id);
+
+      if (!existing) return state;
+
+      if (existing.quantity === 1) {
+        return {
+          items: state.items.filter((i) => i.id !== id),
+        };
+      }
+
+      return {
+        items: state.items.map((i) =>
+          i.id === id ? { ...i, quantity: i.quantity - 1 } : i,
+        ),
       };
     }),
 

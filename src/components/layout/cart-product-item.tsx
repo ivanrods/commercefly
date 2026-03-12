@@ -3,12 +3,16 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { CartItem } from "@/src/types/cart-item-type";
+import { useCartStore } from "@/src/store/cart-store";
 
 type ProductCardProps = {
   product: CartItem;
 };
 
 const CartProductItem = ({ product }: ProductCardProps) => {
+  const addItem = useCartStore((state) => state.addItem);
+  const removeItem = useCartStore((state) => state.removeItem);
+  const decrementItem = useCartStore((state) => state.decrementItem);
   return (
     <div className="mb-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -24,26 +28,30 @@ const CartProductItem = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-1 text-center">
             <Button
               className="h-7 w-7 rounded-lg"
-              onClick={() => console.log("decrementar")}
+              onClick={() => decrementItem(product.id)}
+              variant="outline"
             >
               <ChevronLeftIcon />
             </Button>
             <p className="w-7 text-xs">{product.quantity}</p>
             <Button
               className="h-7 w-7 rounded-lg"
-              onClick={() => console.log("incrementar")}
-              variant="outline"
+              onClick={() =>
+                addItem({
+                  ...product,
+                  quantity: 1,
+                })
+              }
             >
               <ChevronRightIcon />
             </Button>
           </div>
         </div>
       </div>
-      {/* BOTÃO DE DELETAR */}
       <Button
         className="h-7 w-7 rounded-lg"
         variant="outline"
-        onClick={() => console.log("remove")}
+        onClick={() => removeItem(product.id)}
       >
         <TrashIcon />
       </Button>
