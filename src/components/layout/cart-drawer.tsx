@@ -13,8 +13,11 @@ import {
 import { useCartStore } from "@/src/store/cart-store";
 import { ShoppingCart } from "lucide-react";
 import CartProductItem from "./cart-product-item";
+import { Card, CardContent } from "@/components/ui/card";
 export function CartDrawer() {
   const items = useCartStore((state) => state.items);
+  const totalPrice = useCartStore((state) => state.totalPrice());
+  const totalItems = useCartStore((state) => state.totalItems());
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -25,7 +28,9 @@ export function CartDrawer() {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Carrinho</DrawerTitle>
-          <DrawerDescription>Seus pedidos</DrawerDescription>
+          <DrawerDescription>
+            Você tem {totalItems} itens no carrinho
+          </DrawerDescription>
         </DrawerHeader>
         <div className="no-scrollbar overflow-y-auto px-4">
           {items.map((item) => (
@@ -33,6 +38,14 @@ export function CartDrawer() {
           ))}
         </div>
         <DrawerFooter>
+          <Card>
+            <CardContent>
+              <div className="flex justify-between">
+                <p className="text-sm text-muted-foreground">Total</p>
+                <p className="text-sm font-semibold">{totalPrice}</p>
+              </div>
+            </CardContent>
+          </Card>
           <Button>Finalizar pedido</Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancelar</Button>
