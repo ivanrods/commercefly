@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/src/helpers/format-currency";
 import { getProductById } from "@/src/services/product-service";
 import Image from "next/image";
 
@@ -42,7 +43,7 @@ export default async function ProductPage({ params }: Props) {
 
             <div className="flex items-center justify-between">
               <p className="text-3xl font-bold text-primary">
-                R$ {product.price}
+                {formatCurrency(product.price)}
               </p>
             </div>
 

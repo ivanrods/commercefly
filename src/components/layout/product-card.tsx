@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { formatCurrency } from "@/src/helpers/format-currency";
 import { useCartStore } from "@/src/store/cart-store";
 import { Product } from "@/src/types/product-type";
 import { ShoppingCart } from "lucide-react";
@@ -36,7 +37,9 @@ export function ProductCard({ product, id }: ProductCardProps) {
           <p className=" text-base md:text-sm text-neutral-500">
             {product.description}
           </p>
-          <p className="mt-2 text-md md:text-lg font-bold">${product.price}</p>
+          <p className="mt-2 text-md md:text-lg font-bold">
+            {formatCurrency(product.price)}
+          </p>
         </CardContent>
       </Link>
       <CardFooter className="pb-4">

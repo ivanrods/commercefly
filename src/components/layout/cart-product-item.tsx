@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CartItem } from "@/src/types/cart-item-type";
 import { useCartStore } from "@/src/store/cart-store";
+import { formatCurrency } from "@/src/helpers/format-currency";
 
 type ProductCardProps = {
   product: CartItem;
@@ -23,7 +24,9 @@ const CartProductItem = ({ product }: ProductCardProps) => {
           <p className="max-w-[90%] truncate text-ellipsis text-xs">
             {product.name}
           </p>
-          <p className="text-sm font-semibold">{product.price}</p>
+          <p className="text-sm font-semibold">
+            {formatCurrency(product.price)}
+          </p>
 
           <div className="flex items-center gap-1 text-center">
             <Button

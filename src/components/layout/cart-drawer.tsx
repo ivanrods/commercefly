@@ -14,6 +14,7 @@ import { useCartStore } from "@/src/store/cart-store";
 import { ShoppingCart } from "lucide-react";
 import CartProductItem from "./cart-product-item";
 import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/src/helpers/format-currency";
 export function CartDrawer() {
   const items = useCartStore((state) => state.items);
   const totalPrice = useCartStore((state) => state.totalPrice());
@@ -42,7 +43,9 @@ export function CartDrawer() {
             <CardContent>
               <div className="flex justify-between">
                 <p className="text-sm text-muted-foreground">Total</p>
-                <p className="text-sm font-semibold">{totalPrice}</p>
+                <p className="text-sm font-semibold">
+                  {formatCurrency(totalPrice)}
+                </p>
               </div>
             </CardContent>
           </Card>
