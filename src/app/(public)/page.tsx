@@ -1,14 +1,14 @@
+import { getCategories } from "src/services/category-service";
+import { getProducts } from "src/services/product-service";
+import { CarouselBanners } from "./components/carousel-banners";
 import {
   Carousel,
   CarouselContent,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { CarouselBanners } from "@/src/components/layout/carousel-banners";
-import { CategoryCard } from "@/src/components/layout/categories-card";
-import { ProductCard } from "@/src/components/layout/product-card";
-import { getCategories } from "@/src/services/category-service";
-import { getProducts } from "@/src/services/product-service";
+} from "src/components/ui/carousel";
+import { CategoryCard } from "./components/categories-card";
+import { ProductCard } from "./components/product-card";
 
 export default async function HomePage() {
   const { products } = await getProducts({

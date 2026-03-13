@@ -5,10 +5,12 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+
 import { ShoppingBag } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+
 import { CartDrawer } from "./cart-drawer";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
 
 export function SiteHeader() {
   return (

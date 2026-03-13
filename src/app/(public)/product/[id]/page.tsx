@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/src/helpers/format-currency";
-import { getProductById } from "@/src/services/product-service";
 import Image from "next/image";
+import { Button } from "src/components/ui/button";
+import { Card, CardContent } from "src/components/ui/card";
+import { formatCurrency } from "src/helpers/format-currency";
+import { getProductById } from "src/services/product-service";
 
 type Props = {
   params: Promise<{

@@ -1,5 +1,5 @@
-import { ProductCard } from "@/src/components/layout/product-card";
-import { getCategoryBySlug } from "@/src/services/category-service";
+import { getCategoryBySlug } from "src/services/category-service";
+import { ProductCard } from "../../components/product-card";
 
 type Props = {
   params: Promise<{

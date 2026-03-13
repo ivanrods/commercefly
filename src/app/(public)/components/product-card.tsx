@@ -1,17 +1,17 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "src/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { formatCurrency } from "@/src/helpers/format-currency";
-import { useCartStore } from "@/src/store/cart-store";
-import { Product } from "@/src/types/product-type";
-import { ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+} from "src/components/ui/card";
+import { formatCurrency } from "src/helpers/format-currency";
+import { useCartStore } from "src/store/cart-store";
+import { Product } from "src/types/product-type";
 
 type ProductCardProps = {
   product: Product;

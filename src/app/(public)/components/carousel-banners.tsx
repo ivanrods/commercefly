@@ -1,11 +1,11 @@
+import Image from "next/image";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Image from "next/image";
+} from "src/components/ui/carousel";
 
 const images = [
   "https://i.ibb.co/QgVSCk8/banner1.png",

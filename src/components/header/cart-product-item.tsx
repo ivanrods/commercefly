@@ -1,10 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
-
-import { Button } from "@/components/ui/button";
-import { CartItem } from "@/src/types/cart-item-type";
-import { useCartStore } from "@/src/store/cart-store";
-import { formatCurrency } from "@/src/helpers/format-currency";
+import { formatCurrency } from "src/helpers/format-currency";
+import { useCartStore } from "src/store/cart-store";
+import { Button } from "../ui/button";
+import { CartItem } from "src/types/cart-item-type";
 
 type ProductCardProps = {
   product: CartItem;

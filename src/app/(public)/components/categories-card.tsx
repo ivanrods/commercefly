@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "src/components/ui/button";
 
 type CategoryCardProps = {
   id: string;

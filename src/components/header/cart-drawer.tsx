@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
 import {
   Drawer,
   DrawerClose,
@@ -9,12 +9,15 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { useCartStore } from "@/src/store/cart-store";
+} from "../ui/drawer";
+
 import { ShoppingCart } from "lucide-react";
 import CartProductItem from "./cart-product-item";
-import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/src/helpers/format-currency";
+import { Button } from "../ui/button";
+import { useCartStore } from "src/store/cart-store";
+import { Card, CardContent } from "../ui/card";
+import { formatCurrency } from "src/helpers/format-currency";
+
 export function CartDrawer() {
   const items = useCartStore((state) => state.items);
   const totalPrice = useCartStore((state) => state.totalPrice());
