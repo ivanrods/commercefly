@@ -14,14 +14,34 @@ import {
 import { ShoppingCart } from "lucide-react";
 import CartProductItem from "./cart-product-item";
 import { Button } from "../ui/button";
-import { useCartStore } from "src/store/cart-store";
+
 import { Card, CardContent } from "../ui/card";
 import { formatCurrency } from "src/helpers/format-currency";
+import { getCart } from "src/services/cart-service";
+import { useEffect, useState } from "react";
 
 export function CartDrawer() {
-  const items = useCartStore((state) => state.items);
-  const totalPrice = useCartStore((state) => state.totalPrice());
-  const totalItems = useCartStore((state) => state.totalItems());
+  const [items, setItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function loadCart() {
+      const cart = await getCart();
+
+      if (cart?.items) {
+        setItems(cart.items);
+      }
+    }
+
+    loadCart();
+  }, []);
+
+  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+
+  const totalPrice = items.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0,
+  );
+
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -38,7 +58,16 @@ export function CartDrawer() {
         </DrawerHeader>
         <div className="no-scrollbar overflow-y-auto px-4">
           {items.map((item) => (
-            <CartProductItem key={item.id} product={item} />
+            <CartProductItem
+              key={item.productId}
+              product={{
+                productId: item.product.id,
+                name: item.product.name,
+                price: item.product.price,
+                imageUrl: item.product.imageUrl,
+                quantity: item.quantity,
+              }}
+            />
           ))}
         </div>
         <DrawerFooter>

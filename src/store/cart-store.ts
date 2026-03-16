@@ -21,12 +21,16 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) =>
         set((state) => {
-          const existing = state.items.find((i) => i.id === item.id);
+          const existing = state.items.find(
+            (i) => i.productId === item.productId,
+          );
 
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
+                i.productId === item.productId
+                  ? { ...i, quantity: i.quantity + 1 }
+                  : i,
               ),
             };
           }
@@ -36,28 +40,30 @@ export const useCartStore = create<CartStore>()(
           };
         }),
 
-      decrementItem: (id) =>
+      decrementItem: (productId) =>
         set((state) => {
-          const existing = state.items.find((i) => i.id === id);
+          const existing = state.items.find((i) => i.productId === productId);
 
           if (!existing) return state;
 
           if (existing.quantity === 1) {
             return {
-              items: state.items.filter((i) => i.id !== id),
+              items: state.items.filter((i) => i.productId !== productId),
             };
           }
 
           return {
             items: state.items.map((i) =>
-              i.id === id ? { ...i, quantity: i.quantity - 1 } : i,
+              i.productId === productId
+                ? { ...i, quantity: i.quantity - 1 }
+                : i,
             ),
           };
         }),
 
-      removeItem: (id) =>
+      removeItem: (productId) =>
         set((state) => ({
-          items: state.items.filter((i) => i.id !== id),
+          items: state.items.filter((i) => i.productId !== productId),
         })),
 
       clearCart: () =>

@@ -10,7 +10,8 @@ import {
   CardHeader,
 } from "src/components/ui/card";
 import { formatCurrency } from "src/helpers/format-currency";
-import { useCartStore } from "src/store/cart-store";
+import { addToCart } from "src/services/cart-service";
+
 import { Product } from "src/types/product-type";
 
 type ProductCardProps = {
@@ -19,7 +20,10 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, id }: ProductCardProps) {
-  const addItem = useCartStore((state) => state.addItem);
+  async function handleAdd() {
+    await addToCart(product.id);
+  }
+
   return (
     <Card>
       <Link href={`/product/${id}`}>
@@ -46,12 +50,7 @@ export function ProductCard({ product, id }: ProductCardProps) {
         <Button
           variant="default"
           className="w-full"
-          onClick={() =>
-            addItem({
-              ...product,
-              quantity: 1,
-            })
-          }
+          onClick={() => handleAdd(product.id)}
         >
           Adicionar <ShoppingCart />
         </Button>

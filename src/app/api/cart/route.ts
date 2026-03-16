@@ -1,16 +1,20 @@
 import { auth } from "@clerk/nextjs/server";
-import prisma from "../../../lib/prisma";
 import { NextResponse } from "next/server";
+import prisma from "src/lib/prisma";
 
 export async function GET() {
-  const { userId } = await auth();
+  const { userId: clerkId } = await auth();
 
-  if (!userId) {
-    return NextResponse.json(null);
-  }
+  if (!clerkId) return NextResponse.json(null);
+
+  const user = await prisma.user.findUnique({
+    where: { clerkId },
+  });
+
+  if (!user) return NextResponse.json(null);
 
   const cart = await prisma.cart.findUnique({
-    where: { userId },
+    where: { userId: user.id },
     include: {
       items: {
         include: {

@@ -1,18 +1,27 @@
 import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "src/helpers/format-currency";
-import { useCartStore } from "src/store/cart-store";
 import { Button } from "../ui/button";
 import { CartItem } from "src/types/cart-item-type";
+import {
+  addToCart,
+  decrementCartItem,
+  removeFromCart,
+} from "src/services/cart-service";
 
 type ProductCardProps = {
   product: CartItem;
 };
 
 const CartProductItem = ({ product }: ProductCardProps) => {
-  const addItem = useCartStore((state) => state.addItem);
-  const removeItem = useCartStore((state) => state.removeItem);
-  const decrementItem = useCartStore((state) => state.decrementItem);
+  async function handleAdd() {
+    await addToCart(product.productId);
+  }
+
+  async function handleRemove() {
+    await removeFromCart(product.productId);
+  }
+
   return (
     <div className="mb-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -30,21 +39,13 @@ const CartProductItem = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-1 text-center">
             <Button
               className="h-7 w-7 rounded-lg"
-              onClick={() => decrementItem(product.id)}
+              onClick={() => decrementCartItem(product.productId)}
               variant="outline"
             >
               <ChevronLeftIcon />
             </Button>
             <p className="w-7 text-xs">{product.quantity}</p>
-            <Button
-              className="h-7 w-7 rounded-lg"
-              onClick={() =>
-                addItem({
-                  ...product,
-                  quantity: 1,
-                })
-              }
-            >
+            <Button className="h-7 w-7 rounded-lg" onClick={handleAdd}>
               <ChevronRightIcon />
             </Button>
           </div>
@@ -53,7 +54,7 @@ const CartProductItem = ({ product }: ProductCardProps) => {
       <Button
         className="h-7 w-7 rounded-lg"
         variant="outline"
-        onClick={() => removeItem(product.id)}
+        onClick={handleRemove}
       >
         <TrashIcon />
       </Button>
