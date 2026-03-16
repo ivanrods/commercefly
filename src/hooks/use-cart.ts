@@ -1,21 +1,56 @@
-"use client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  addToCart,
+  decrementCartItem,
+  getCart,
+  removeFromCart,
+} from "src/services/cart-service";
 
-import { useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
-import { useCartStore } from "src/store/cart-store";
+export function useCart() {
+  return useQuery({
+    queryKey: ["cart"],
+    queryFn: getCart,
+  });
+}
 
-export function useSyncCart() {
-  const { isSignedIn } = useUser();
-  const items = useCartStore((state) => state.items);
+export function useAddCart() {
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (!isSignedIn) return;
+  return useMutation({
+    mutationFn: addToCart,
 
-    if (items.length === 0) return;
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
+    },
+  });
+}
 
-    fetch("/api/cart/sync", {
-      method: "POST",
-      body: JSON.stringify({ items }),
-    });
-  }, [items, isSignedIn]);
+export function useDecrementCart() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: decrementCartItem,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
+    },
+  });
+}
+
+export function useRemoveCart() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: removeFromCart,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
+      });
+    },
+  });
 }

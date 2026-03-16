@@ -4,23 +4,19 @@ import { formatCurrency } from "src/helpers/format-currency";
 import { Button } from "../ui/button";
 import { CartItem } from "src/types/cart-item-type";
 import {
-  addToCart,
-  decrementCartItem,
-  removeFromCart,
-} from "src/services/cart-service";
+  useAddCart,
+  useDecrementCart,
+  useRemoveCart,
+} from "src/hooks/use-cart";
 
 type ProductCardProps = {
   product: CartItem;
 };
 
 const CartProductItem = ({ product }: ProductCardProps) => {
-  async function handleAdd() {
-    await addToCart(product.productId);
-  }
-
-  async function handleRemove() {
-    await removeFromCart(product.productId);
-  }
+  const { mutate: addItem } = useAddCart();
+  const { mutate: decrementItem } = useDecrementCart();
+  const { mutate: removeItem } = useRemoveCart();
 
   return (
     <div className="mb-4 flex items-center justify-between">
@@ -39,13 +35,16 @@ const CartProductItem = ({ product }: ProductCardProps) => {
           <div className="flex items-center gap-1 text-center">
             <Button
               className="h-7 w-7 rounded-lg"
-              onClick={() => decrementCartItem(product.productId)}
+              onClick={() => decrementItem(product.productId)}
               variant="outline"
             >
               <ChevronLeftIcon />
             </Button>
             <p className="w-7 text-xs">{product.quantity}</p>
-            <Button className="h-7 w-7 rounded-lg" onClick={handleAdd}>
+            <Button
+              className="h-7 w-7 rounded-lg"
+              onClick={() => addItem(product.productId)}
+            >
               <ChevronRightIcon />
             </Button>
           </div>
@@ -54,7 +53,7 @@ const CartProductItem = ({ product }: ProductCardProps) => {
       <Button
         className="h-7 w-7 rounded-lg"
         variant="outline"
-        onClick={handleRemove}
+        onClick={() => removeItem(product.productId)}
       >
         <TrashIcon />
       </Button>

@@ -14,31 +14,24 @@ import {
 import { ShoppingCart } from "lucide-react";
 import CartProductItem from "./cart-product-item";
 import { Button } from "../ui/button";
-
 import { Card, CardContent } from "../ui/card";
 import { formatCurrency } from "src/helpers/format-currency";
-import { getCart } from "src/services/cart-service";
-import { useEffect, useState } from "react";
+
+import { useCart } from "src/hooks/use-cart";
+import { CartItem } from "src/types/cart-item-type";
 
 export function CartDrawer() {
-  const [items, setItems] = useState<any[]>([]);
+  const { data: cart } = useCart();
 
-  useEffect(() => {
-    async function loadCart() {
-      const cart = await getCart();
+  const items = cart?.items ?? [];
 
-      if (cart?.items) {
-        setItems(cart.items);
-      }
-    }
-
-    loadCart();
-  }, []);
-
-  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+  const totalItems = items.reduce(
+    (acc: number, item: CartItem) => acc + item.quantity,
+    0,
+  );
 
   const totalPrice = items.reduce(
-    (acc, item) => acc + item.product.price * item.quantity,
+    (acc: number, item: CartItem) => acc + item.price * item.quantity,
     0,
   );
 

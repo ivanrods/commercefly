@@ -3,7 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "../components/header/site-header";
-import { CartSyncProvider } from "src/providers/cart-sync-provider";
+import { ReactQueryProvider } from "src/providers/react-query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,15 +27,16 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="pt-BR">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <CartSyncProvider />
-          <SiteHeader />
-          {children}
-        </body>
-      </html>
+      <ReactQueryProvider>
+        <html lang="pt-BR">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <SiteHeader />
+            {children}
+          </body>
+        </html>
+      </ReactQueryProvider>
     </ClerkProvider>
   );
 }

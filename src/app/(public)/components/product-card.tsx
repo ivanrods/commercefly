@@ -10,7 +10,7 @@ import {
   CardHeader,
 } from "src/components/ui/card";
 import { formatCurrency } from "src/helpers/format-currency";
-import { addToCart } from "src/services/cart-service";
+import { useAddCart } from "src/hooks/use-cart";
 
 import { Product } from "src/types/product-type";
 
@@ -20,9 +20,7 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, id }: ProductCardProps) {
-  async function handleAdd() {
-    await addToCart(product.id);
-  }
+  const { mutate: addItem } = useAddCart();
 
   return (
     <Card>
@@ -50,7 +48,7 @@ export function ProductCard({ product, id }: ProductCardProps) {
         <Button
           variant="default"
           className="w-full"
-          onClick={() => handleAdd(product.id)}
+          onClick={() => addItem(product.id)}
         >
           Adicionar <ShoppingCart />
         </Button>
