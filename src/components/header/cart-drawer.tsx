@@ -19,19 +19,29 @@ import { formatCurrency } from "src/helpers/format-currency";
 
 import { useCart } from "src/hooks/use-cart";
 import { CartItem } from "src/types/cart-item-type";
+import { Product } from "src/types/product-type";
 
 export function CartDrawer() {
   const { data: cart } = useCart();
 
-  const items = cart?.items ?? [];
+  type CartItemType = {
+    product: Pick<Product, "id" | "name" | "price" | "imageUrl">;
+    quantity: number;
+  };
 
-  const totalItems = items.reduce(
-    (acc: number, item: CartItem) => acc + item.quantity,
-    0,
-  );
+  const items: CartItem[] =
+    cart?.items.map((item: CartItemType) => ({
+      productId: item.product.id,
+      name: item.product.name,
+      price: item.product.price,
+      imageUrl: item.product.imageUrl,
+      quantity: item.quantity,
+    })) ?? [];
+
+  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const totalPrice = items.reduce(
-    (acc: number, item: CartItem) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.price * item.quantity,
     0,
   );
 
@@ -51,16 +61,7 @@ export function CartDrawer() {
         </DrawerHeader>
         <div className="no-scrollbar overflow-y-auto px-4">
           {items.map((item) => (
-            <CartProductItem
-              key={item.productId}
-              product={{
-                productId: item.product.id,
-                name: item.product.name,
-                price: item.product.price,
-                imageUrl: item.product.imageUrl,
-                quantity: item.quantity,
-              }}
-            />
+            <CartProductItem key={item.productId} product={item} />
           ))}
         </div>
         <DrawerFooter>
