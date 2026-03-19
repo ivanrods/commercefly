@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "vitest run",
+    "seed": "tsx prisma/seed.ts",
+    "test": "NODE_ENV=test tsx scripts/test-setup.ts && vitest run",
     "start": "next start",
     "lint": "eslint"
   },
