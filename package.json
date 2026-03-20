@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "seed": "tsx prisma/seed.ts",
     "test": "NODE_ENV=test tsx scripts/test-setup.ts && vitest run",
     "start": "next start",
     "lint": "eslint"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.0",

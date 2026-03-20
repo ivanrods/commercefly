@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
+import dotenv from "dotenv";
 
-process.env.NODE_ENV = "test";
+dotenv.config({ path: ".env.test" });
 
 try {
   console.log("Resetando banco de teste...");
@@ -9,7 +10,7 @@ try {
     stdio: "inherit",
   });
 
-  console.log("Banco pronto para testes");
+  console.log("Banco de teste pronto");
 } catch (error) {
   console.error(error);
   process.exit(1);
