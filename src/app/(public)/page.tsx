@@ -19,9 +19,7 @@ export default async function HomePage() {
   const categories = await getCategories();
 
   return (
-    <main className="space-y-16 p-4 md:px-16 ">
-      <CarouselBanners />
-
+    <main className="space-y-4 p-4 md:px-16 ">
       <Carousel className="w-full ">
         <CarouselContent className="flex gap-2 px-4">
           {categories.map((category) => (
@@ -37,8 +35,8 @@ export default async function HomePage() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-
-      <div className=" grid items-center gap-4 grid-cols-1 md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5">
+      <h2 className="text-lg md:text-2xl font-bold">Produtos</h2>
+      <div className=" grid items-center gap-4 grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {products.map((product) => {
           return (
             <ProductCard key={product.id} product={product} id={product.id} />
