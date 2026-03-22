@@ -37,7 +37,14 @@ export function ProductCard({ product, id }: ProductCardProps) {
               <p className="mt-2 text-md md:text-lg font-bold">
                 {formatCurrency(product.price)}
               </p>
-              <Button onClick={() => addItem(product.id)} className="md:w-full">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  addItem(product.id);
+                }}
+                className="md:w-full"
+              >
                 <span className="hidden md:block ">Adicionar</span>{" "}
                 <ShoppingCart />
               </Button>
