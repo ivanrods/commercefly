@@ -20,6 +20,7 @@ import { formatCurrency } from "src/helpers/format-currency";
 import { useCart } from "src/hooks/use-cart";
 import { CartItem } from "src/types/cart-item-type";
 import { Product } from "src/types/product-type";
+import { checkout } from "src/services/checkout-service";
 
 export function CartDrawer() {
   const { data: cart } = useCart();
@@ -75,7 +76,7 @@ export function CartDrawer() {
               </div>
             </CardContent>
           </Card>
-          <Button>Finalizar pedido</Button>
+          <Button onClick={checkout}>Finalizar pedido</Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancelar</Button>
           </DrawerClose>
