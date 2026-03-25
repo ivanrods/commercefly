@@ -40,7 +40,7 @@ export async function POST() {
         name: item.product.name,
         images: [item.product.imageUrl],
       },
-      unit_amount: item.product.price,
+      unit_amount: item.product.price * 100,
     },
     quantity: item.quantity,
   }));

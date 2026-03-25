@@ -26,9 +26,9 @@ export default function SuccessPage() {
               <Button className="w-full">Ir para o início</Button>
             </Link>
 
-            <Link href="/">
+            <Link href="/orders">
               <Button variant="outline" className="w-full">
-                Acessar minha conta
+                Acessar meus pedidos
               </Button>
             </Link>
           </div>

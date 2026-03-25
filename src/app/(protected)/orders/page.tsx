@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Badge } from "src/components/ui/badge";
 import { Card } from "src/components/ui/card";
+import { formatCurrency } from "src/helpers/format-currency";
 import prisma from "src/lib/prisma";
 
 export default async function OrdersPage() {
@@ -38,10 +39,10 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <p>Você ainda não fez nenhum pedido.</p>
       ) : (
-        <Card className="p-4">
+        <div>
           {orders.map((order) => (
-            <div key={order.id}>
-              <div className="flex justify-between mb-4">
+            <Card key={order.id} className="p-4 mb-4">
+              <div className="flex justify-between ">
                 <div>
                   <p className="font-semibold">Pedido #{order.orderNumber}</p>
                   <p className="text-sm text-gray-500">
@@ -51,7 +52,7 @@ export default async function OrdersPage() {
 
                 <div className="text-right">
                   <p className="font-bold">
-                    R$ {(order.totalAmount / 100).toFixed(2)}
+                    {formatCurrency(order.totalAmount / 100)}
                   </p>
 
                   <Badge>{order.status}</Badge>
@@ -72,14 +73,14 @@ export default async function OrdersPage() {
                     </div>
 
                     <p className="font-medium">
-                      R$ {(item.price / 100).toFixed(2)}
+                      {formatCurrency(item.price / 100)}
                     </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           ))}
-        </Card>
+        </div>
       )}
     </div>
   );

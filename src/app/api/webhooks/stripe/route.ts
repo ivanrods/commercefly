@@ -52,14 +52,14 @@ export async function POST(req: Request) {
       data: {
         userId,
         orderNumber: `ORD-${Date.now()}`,
-        totalAmount: session.amount_total ?? 0, // em centavos
+        totalAmount: session.amount_total ?? 0,
         status: "PAID",
 
         items: {
           create: cart.items.map((item) => ({
             productId: item.productId,
             name: item.product.name,
-            price: item.product.price,
+            price: item.product.price * 100,
             quantity: item.quantity,
           })),
         },
