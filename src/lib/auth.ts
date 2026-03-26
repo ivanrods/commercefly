@@ -9,7 +9,7 @@ export async function requireAdmin() {
   }
 
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { clerkId: userId },
   });
 
   if (!user || user.role !== "ADMIN") {
