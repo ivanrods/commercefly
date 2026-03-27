@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "src/components/ui/input";
 import {
@@ -14,6 +14,20 @@ import {
 import { Button } from "src/components/ui/button";
 import { Textarea } from "src/components/ui/textarea";
 import { Checkbox } from "src/components/ui/checkbox";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "src/components/ui/combobox";
+
+type category = {
+  id: string;
+  name: string;
+  slug: string;
+};
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -27,6 +41,17 @@ export default function NewProductPage() {
     categoryId: "",
     isFeatured: false,
   });
+  const [categories, setCategories] = useState<category[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(data);
+    }
+
+    loadCategories();
+  }, []);
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -46,7 +71,7 @@ export default function NewProductPage() {
         credentials: "include",
         body: JSON.stringify({
           ...form,
-          price: Number(form.price) * 100,
+          price: Number(form.price),
           stock: Number(form.stock),
         }),
       });
@@ -107,11 +132,29 @@ export default function NewProductPage() {
             </Field>
             <Field>
               <FieldLabel htmlFor="categoryId">Categoria do produto</FieldLabel>
-              <Input
-                name="categoryId"
-                placeholder="Category ID"
-                onChange={handleChange}
-              />
+              <Combobox
+                items={categories}
+                onValueChange={(value) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    categoryId: value as string,
+                  }))
+                }
+              >
+                <ComboboxInput placeholder="Selecione uma categoria" />
+
+                <ComboboxContent>
+                  <ComboboxEmpty>Nenhuma categoria encontrada.</ComboboxEmpty>
+
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item.id} value={item.id}>
+                        {item.name}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
             </Field>
 
             <Field orientation="horizontal">
@@ -130,9 +173,6 @@ export default function NewProductPage() {
                   Produto em destaque?
                 </FieldLabel>
               </Field>
-              <FieldLabel htmlFor="terms-checkbox-basic">
-                Produto em destaque?
-              </FieldLabel>
             </Field>
 
             <Field orientation="horizontal">
