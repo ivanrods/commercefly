@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Input } from "src/components/ui/input";
 import {
   Field,
@@ -23,25 +27,39 @@ import {
   ComboboxList,
 } from "src/components/ui/combobox";
 
-type category = {
-  id: string;
-  name: string;
-  slug: string;
-};
+const productSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  description: z.string().min(1, "Descrição é obrigatória"),
+  price: z.coerce.number().min(1, "Preço inválido"),
+  imageUrl: z.string().url("URL inválida"),
+  stock: z.coerce.number().min(0),
+  categoryId: z.string().min(1, "Selecione uma categoria"),
+  isFeatured: z.boolean(),
+});
+
+type FormData = z.infer<typeof productSchema>;
 
 export default function NewProductPage() {
   const router = useRouter();
+  const [categories, setCategories] = useState<any[]>([]);
 
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    price: "",
-    imageUrl: "",
-    stock: 0,
-    categoryId: "",
-    isFeatured: false,
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0,
+      imageUrl: "",
+      stock: 0,
+      categoryId: "",
+      isFeatured: false,
+    },
   });
-  const [categories, setCategories] = useState<category[]>([]);
 
   useEffect(() => {
     async function loadCategories() {
@@ -53,26 +71,14 @@ export default function NewProductPage() {
     loadCategories();
   }, []);
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: FormData) => {
     try {
       await fetch("/api/products", {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({
-          ...form,
-          price: Number(form.price),
-          stock: Number(form.stock),
+          ...data,
+          price: data.price,
         }),
       });
 
@@ -89,56 +95,51 @@ export default function NewProductPage() {
       <FieldSet>
         <FieldLegend>Novo Produto</FieldLegend>
         <FieldDescription>Pagina para adicionar produtos</FieldDescription>
-        <form onSubmit={handleSubmit}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="name">Nome do produto</FieldLabel>
-              <Input name="name" placeholder="Nome" onChange={handleChange} />
+              <FieldLabel>Nome do produto</FieldLabel>
+              <Input {...register("name")} placeholder="Nome" />
+              <p className="text-red-500 text-sm">{errors.name?.message}</p>
             </Field>
+
             <Field>
-              <FieldLabel htmlFor="description">
-                Descrição do produto
-              </FieldLabel>
-              <Textarea
-                name="description"
-                placeholder="Descrição"
-                onChange={handleChange}
-              />
+              <FieldLabel>Descrição do produto</FieldLabel>
+              <Textarea {...register("description")} placeholder="Descrição" />
+              <p className="text-red-500 text-sm">
+                {errors.description?.message}
+              </p>
             </Field>
+
             <Field>
-              <FieldLabel htmlFor="price">Preço do produto</FieldLabel>
+              <FieldLabel>Preço do produto</FieldLabel>
+              <Input {...register("price")} placeholder="ex: 50 ou 50,99" />
+              <p className="text-red-500 text-sm">{errors.price?.message}</p>
+            </Field>
+
+            <Field>
+              <FieldLabel>Link da Imagem</FieldLabel>
+              <Input {...register("imageUrl")} placeholder="https://..." />
+              <p className="text-red-500 text-sm">{errors.imageUrl?.message}</p>
+            </Field>
+
+            <Field>
+              <FieldLabel>Quantidade disponível</FieldLabel>
               <Input
-                name="price"
-                placeholder="ex: 50"
-                onChange={handleChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="imageUrl">Link da Imagem</FieldLabel>
-              <Input
-                name="imageUrl"
-                placeholder="https://i.ibb.co"
-                onChange={handleChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="stock">Quantidade disponivel</FieldLabel>
-              <Input
-                name="stock"
                 type="number"
+                {...register("stock")}
                 placeholder="Estoque"
-                onChange={handleChange}
               />
             </Field>
+
             <Field>
-              <FieldLabel htmlFor="categoryId">Categoria do produto</FieldLabel>
+              <FieldLabel>Categoria do produto</FieldLabel>
+
               <Combobox
                 items={categories}
                 onValueChange={(value) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    categoryId: value as string,
-                  }))
+                  setValue("categoryId", value as string)
                 }
               >
                 <ComboboxInput placeholder="Selecione uma categoria" />
@@ -155,28 +156,23 @@ export default function NewProductPage() {
                   </ComboboxList>
                 </ComboboxContent>
               </Combobox>
+
+              <p className="text-red-500 text-sm">
+                {errors.categoryId?.message}
+              </p>
             </Field>
 
             <Field orientation="horizontal">
-              <Field orientation="horizontal">
-                <Checkbox
-                  id="isFeatured"
-                  checked={form.isFeatured}
-                  onCheckedChange={(checked) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      isFeatured: !!checked,
-                    }))
-                  }
-                />
-                <FieldLabel htmlFor="isFeatured">
-                  Produto em destaque?
-                </FieldLabel>
-              </Field>
+              <Checkbox
+                onCheckedChange={(checked) => setValue("isFeatured", !!checked)}
+              />
+              <FieldLabel>Produto em destaque?</FieldLabel>
             </Field>
 
             <Field orientation="horizontal">
-              <Button type="submit">Criar produto</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Criando..." : "Criar produto"}
+              </Button>
             </Field>
           </FieldGroup>
         </form>
