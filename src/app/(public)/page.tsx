@@ -1,6 +1,5 @@
 import { getCategories } from "src/services/category-service";
 import { getProducts } from "src/services/product-service";
-import { CarouselBanners } from "./components/carousel-banners";
 import {
   Carousel,
   CarouselContent,
@@ -37,14 +36,19 @@ export default async function HomePage() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <h2 className="text-lg md:text-2xl font-bold">Produtos</h2>
-      <div className="max-w-7xl mx-auto grid items-center gap-4 grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        {products.map((product) => {
-          return (
-            <ProductCard key={product.id} product={product} id={product.id} />
-          );
-        })}
-      </div>
+
+      <section className="w-full px-8 py-12">
+        <h2 className="mb-8 text-center text-2xl font-bold text-balance md:text-3xl">
+          As melhores ofertas de hoje para você!
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6 xl:grid-cols-6">
+          {products.map((product) => {
+            return (
+              <ProductCard key={product.id} product={product} id={product.id} />
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }
