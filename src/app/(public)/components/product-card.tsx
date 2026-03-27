@@ -23,18 +23,23 @@ export function ProductCard({ product, id }: ProductCardProps) {
       <Link href={`/product/${id}`} className=" ">
         <div className="flex items-center gap-2 p-2 border-b md:border-none md:flex-col md:p-0 md:w-full ">
           <div className="md:w-full md:bg-neutral-100 ">
-            <div className="relative w-28 h-28  md:w-72 md:h-72 mx-auto">
+            <div className="relative w-28 h-28  md:w-64 md:h-64 mx-auto">
               <Image src={product.imageUrl} alt={product.name} fill />
             </div>
           </div>
 
-          <CardContent className="p-0 w-full flex flex-col gap-2 md:p-4">
-            <p className="text-lg md:text-xl font-semibold">{product.name}</p>
-            <p className=" text-sm  text-neutral-500 line-clamp-2">
-              {product.description}
-            </p>
-            <div className="w-full flex justify-between items-center md:block md:space-y-2">
-              <p className="mt-2 text-md md:text-lg font-bold">
+          <CardContent className="md:h-52 p-0 w-full flex flex-col gap-2 md:p-4 md: justify-between">
+            <div>
+              <p className="text-lg font-semibold line-clamp-2">
+                {product.name}
+              </p>
+              <p className=" text-sm  text-neutral-500 line-clamp-2">
+                {product.description}
+              </p>
+            </div>
+
+            <div className="w-full flex justify-between items-center md:block md:space-y-2 ">
+              <p className="mt-2 text-md  font-bold">
                 {formatCurrency(product.price)}
               </p>
               <Button
