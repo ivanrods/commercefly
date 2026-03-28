@@ -6,11 +6,11 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, ShoppingCart } from "lucide-react";
 
-import { CartDrawer } from "./cart-drawer";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export function SiteHeader() {
   return (
@@ -19,7 +19,11 @@ export function SiteHeader() {
         <ShoppingBag />
         <h1 className="text-base font-medium">CommerceFly</h1>
         <div className="ml-auto flex items-center gap-2">
-          <CartDrawer />
+          <Link href="/cart">
+            <Button variant="ghost">
+              <ShoppingCart />
+            </Button>
+          </Link>
 
           <Separator
             orientation="vertical"
