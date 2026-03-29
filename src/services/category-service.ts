@@ -1,19 +1,40 @@
 import prisma from "../lib/prisma";
 
-export async function getCategories() {
-  const categories = await prisma.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      imageUrl: true,
-    },
-  });
+type GetCategoriesParams = {
+  page?: number;
+  limit?: number;
+};
 
-  return categories;
+export async function getCategories({
+  page = 1,
+  limit = 8,
+}: GetCategoriesParams) {
+  const skip = (page - 1) * limit;
+
+  const [categories, total] = await Promise.all([
+    prisma.category.findMany({
+      skip,
+      take: limit,
+      orderBy: {
+        name: "desc",
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        imageUrl: true,
+      },
+    }),
+
+    prisma.category.count(),
+  ]);
+
+  return {
+    categories,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 }
 
 export async function getCategoryBySlug(slug: string) {
