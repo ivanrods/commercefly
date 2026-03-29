@@ -45,10 +45,13 @@ export default async function HomePage() {
                   </p>
                 </div>
               </div>
-              <Button className="cursor-pointer whitespace-nowrap" size="lg">
-                Ver todas as categorias
-                <ArrowRight className="ms-2" />
-              </Button>
+              <Link href="/category">
+                {" "}
+                <Button className="cursor-pointer whitespace-nowrap" size="lg">
+                  Ver todas as categorias
+                  <ArrowRight className="ms-2" />
+                </Button>
+              </Link>
             </div>
           </header>
 
