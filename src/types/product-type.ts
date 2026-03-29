@@ -9,7 +9,10 @@ export type Product = {
   };
   categoryId: string;
   createdAt: Date;
-  imageUrl: string;
+  images: {
+    id: string;
+    url: string;
+  }[];
   isFeatured: boolean;
   price: number;
   stock: number;

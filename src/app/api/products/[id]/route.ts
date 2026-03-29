@@ -24,7 +24,7 @@ export async function GET(req: Request, { params }: Params) {
         name: true,
         description: true,
         price: true,
-        imageUrl: true,
+        images: true,
         stock: true,
         isFeatured: true,
         category: {

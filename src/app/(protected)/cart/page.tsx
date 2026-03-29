@@ -41,7 +41,9 @@ export default function ShoppingCart1() {
   const { mutate: removeItem } = useRemoveCart();
 
   type CartItemType = {
-    product: Pick<Product, "id" | "name" | "price" | "imageUrl">;
+    product: Pick<Product, "id" | "name" | "price"> & {
+      images: { url: string }[];
+    };
     quantity: number;
   };
 
@@ -50,7 +52,7 @@ export default function ShoppingCart1() {
       productId: item.product.id,
       name: item.product.name,
       price: item.product.price,
-      imageUrl: item.product.imageUrl,
+      imageUrl: item.product.images[0]?.url ?? "",
       quantity: item.quantity,
     })) ?? [];
 

@@ -31,7 +31,7 @@ const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
   price: z.coerce.number().min(1, "Preço inválido"),
-  imageUrl: z.string().url("URL inválida"),
+  images: z.array(z.string().url("URL inválida")).min(1, "Adicione uma imagem"),
   stock: z.coerce.number().min(0),
   categoryId: z.string().min(1, "Selecione uma categoria"),
   isFeatured: z.boolean(),
@@ -54,7 +54,7 @@ export default function NewProductPage() {
       name: "",
       description: "",
       price: 0,
-      imageUrl: "",
+      images: [""],
       stock: 0,
       categoryId: "",
       isFeatured: false,
@@ -120,8 +120,11 @@ export default function NewProductPage() {
 
             <Field>
               <FieldLabel>Link da Imagem</FieldLabel>
-              <Input {...register("imageUrl")} placeholder="https://..." />
-              <p className="text-red-500 text-sm">{errors.imageUrl?.message}</p>
+              <Input
+                placeholder="https://..."
+                onChange={(e) => setValue("images", [e.target.value])}
+              />
+              <p className="text-red-500 text-sm">{errors.images?.message}</p>
             </Field>
 
             <Field>

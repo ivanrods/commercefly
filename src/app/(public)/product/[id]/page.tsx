@@ -51,13 +51,13 @@ export default async function ProductPage({ params }: Props) {
 
             <div className="flex flex-wrap gap-4">
               <div
-                key={product.imageUrl}
+                key={product.id}
                 className={cn(
                   "ring-offset-background size-16 lg:size-18 cursor-pointer overflow-hidden rounded-sm ring-offset-2 transition-all relative",
                 )}
               >
                 <Image
-                  src={product.imageUrl}
+                  src={product.images[0]?.url ?? ""}
                   alt={product.name}
                   fill
                   className="object-cover"
@@ -73,7 +73,7 @@ export default async function ProductPage({ params }: Props) {
                 <CarouselItem key={product.id}>
                   <div className="relative w-full aspect-square">
                     <Image
-                      src={product.imageUrl}
+                      src={product.images[0]?.url ?? ""}
                       alt={product.name}
                       fill
                       className="rounded-lg object-cover"

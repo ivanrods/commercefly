@@ -27,7 +27,7 @@ export async function GET(req: Request, { params }: Params) {
             id: true,
             name: true,
             price: true,
-            imageUrl: true,
+            images: true,
             isFeatured: true,
           },
         },

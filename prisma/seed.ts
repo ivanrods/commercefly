@@ -3,21 +3,33 @@ import prisma from "../src/lib/prisma";
 async function main() {
   await prisma.category.createMany({
     data: [
-      { name: "Calçados", slug: "calcados" },
-      { name: "Beleza e Cosméticos", slug: "beleza-e-cosmeticos" },
-      { name: "Esportes e Lazer", slug: "esportes-e-lazer" },
-      { name: "Casa e Decoração", slug: "casa-e-decoracao" },
-      { name: "Informática", slug: "informatica" },
-      { name: "Brinquedos", slug: "brinquedos" },
-      { name: "Ferramentas", slug: "ferramentas" },
-      { name: "Pet Shop", slug: "pet-shop" },
-      { name: "Saúde", slug: "saude" },
-      { name: "Alimentos e Bebidas", slug: "alimentos-e-bebidas" },
-      { name: "Móveis", slug: "moveis" },
-      { name: "Joias", slug: "joias" },
-      { name: "Moda Infantil", slug: "moda-infantil" },
-      { name: "Moda Masculina", slug: "moda-masculina" },
-      { name: "Moda Feminina", slug: "moda-feminina" },
+      { name: "Calçados", slug: "calcados", imageUrl: "Footprints" },
+      {
+        name: "Beleza e Cosméticos",
+        slug: "beleza-e-cosmeticos",
+        imageUrl: "Sparkles",
+      },
+      {
+        name: "Esportes e Lazer",
+        slug: "esportes-e-lazer",
+        imageUrl: "Dumbbell",
+      },
+      { name: "Casa e Decoração", slug: "casa-e-decoracao", imageUrl: "Home" },
+      { name: "Informática", slug: "informatica", imageUrl: "Laptop" },
+      { name: "Brinquedos", slug: "brinquedos", imageUrl: "Puzzle" },
+      { name: "Ferramentas", slug: "ferramentas", imageUrl: "Wrench" },
+      { name: "Pet Shop", slug: "pet-shop", imageUrl: "Dog" },
+      { name: "Saúde", slug: "saude", imageUrl: "HeartPulse" },
+      {
+        name: "Alimentos e Bebidas",
+        slug: "alimentos-e-bebidas",
+        imageUrl: "Utensils",
+      },
+      { name: "Móveis", slug: "moveis", imageUrl: "Sofa" },
+      { name: "Joias", slug: "joias", imageUrl: "Gem" },
+      { name: "Moda Infantil", slug: "moda-infantil", imageUrl: "Baby" },
+      { name: "Moda Masculina", slug: "moda-masculina", imageUrl: "User" },
+      { name: "Moda Feminina", slug: "moda-feminina", imageUrl: "UserRound" },
     ],
   });
 

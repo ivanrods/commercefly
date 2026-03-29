@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 import { requireAdmin } from "../../../lib/auth";
+import { z } from "zod";
+
+const productSchema = z.object({
+  name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
+  description: z.string().min(5, "Descrição muito curta"),
+  price: z.number().int().positive("Preço deve ser maior que 0"),
+  images: z
+    .array(z.string().url("URL inválida"))
+    .min(1, "Adicione pelo menos uma imagem"),
+  stock: z.number().int().min(0, "Estoque não pode ser negativo"),
+  isFeatured: z.boolean().optional().default(false),
+  categoryId: z.string().uuid("Categoria inválida"),
+});
 
 export async function POST(req: Request) {
   try {
@@ -8,132 +21,53 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    const {
-      name,
-      description,
-      price,
-      imageUrl,
-      stock,
-      isFeatured,
-      categoryId,
-    } = body;
+    const parsed = productSchema.safeParse(body);
 
-    if (!name || !description || !price || !categoryId) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Campos obrigatórios faltando" },
+        {
+          error: "Erro de validação",
+          issues: parsed.error.format(),
+        },
         { status: 400 },
       );
     }
 
+    const data = parsed.data;
+
     const product = await prisma.product.create({
       data: {
-        name,
-        description,
-        price,
-        imageUrl,
-        stock,
-        isFeatured,
-        categoryId,
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        stock: data.stock,
+        isFeatured: data.isFeatured,
+        categoryId: data.categoryId,
+        images: {
+          create: data.images.map((url) => ({
+            url,
+          })),
+        },
+      },
+      include: {
+        images: true,
+        category: true,
       },
     });
 
-    return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(
+      {
+        message: "Produto criado com sucesso",
+        data: product,
+      },
+      { status: 201 },
+    );
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Erro interno";
+    console.error(error);
 
-    return NextResponse.json({ error: message }, { status: 401 });
-  }
-}
-
-export async function GET(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-
-    // Paginação
-    const page = Number(searchParams.get("page")) || 1;
-    const limit = Number(searchParams.get("limit")) || 8;
-    const skip = (page - 1) * limit;
-
-    // Filtros
-    const categorySlug = searchParams.get("category");
-    const search = searchParams.get("search");
-    const featured = searchParams.get("featured");
-
-    // Construção dinâmica do where
-    const where: Record<string, unknown> = {
-      stock: {
-        gt: 0,
-      },
-    };
-
-    if (categorySlug) {
-      where.category = {
-        slug: categorySlug,
-      };
-    }
-
-    if (search) {
-      where.OR = [
-        {
-          name: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-        {
-          description: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-      ];
-    }
-
-    if (featured === "true") {
-      where.isFeatured = true;
-    }
-
-    // Buscar produtos
-    const products = await prisma.product.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imageUrl: true,
-        stock: true,
-        isFeatured: true,
-        category: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-      },
-    });
-
-    // Total para paginação
-    const totalProducts = await prisma.product.count({ where });
-
-    return NextResponse.json({
-      data: products,
-      meta: {
-        total: totalProducts,
-        page,
-        limit,
-        totalPages: Math.ceil(totalProducts / limit),
-      },
-    });
-  } catch (error: unknown) {
     const message =
-      error instanceof Error ? error.message : "Erro ao buscar produtos";
+      error instanceof Error ? error.message : "Erro interno do servidor";
+
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

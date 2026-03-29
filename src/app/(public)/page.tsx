@@ -17,6 +17,7 @@ export default async function HomePage() {
   return (
     <main className="space-y-4 p-4 md:px-16 ">
       <StorefrontHero />
+
       <CategoryCard />
       <section className="w-full px-8 py-12">
         <header className="mx-auto mb-12 ">

@@ -37,6 +37,7 @@ export async function getProducts({
       },
       include: {
         category: true,
+        images: true,
       },
     }),
 
@@ -56,6 +57,7 @@ export async function getProductById(id: string) {
     where: { id },
     include: {
       category: true,
+      images: true,
     },
   });
 
@@ -70,6 +72,7 @@ export async function getFeaturedProducts() {
     take: 4,
     include: {
       category: true,
+      images: true,
     },
   });
 }
@@ -83,6 +86,7 @@ export async function getProductsByCategory(slug: string) {
     },
     include: {
       category: true,
+      images: true,
     },
     orderBy: {
       createdAt: "desc",

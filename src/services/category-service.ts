@@ -5,22 +5,34 @@ export async function getCategories() {
     orderBy: {
       name: "asc",
     },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      imageUrl: true,
+    },
   });
 
   return categories;
 }
 
 export async function getCategoryBySlug(slug: string) {
-  const category = await prisma.category.findUnique({
+  return prisma.category.findUnique({
     where: {
       slug,
     },
     include: {
-      products: true,
+      products: {
+        include: {
+          images: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      },
     },
   });
-
-  return category;
 }
 
 export async function getCategoryById(id: string) {

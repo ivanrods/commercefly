@@ -26,7 +26,7 @@ export function ProductCard({ product, id }: ProductCardProps) {
         <div className="aspect-square overflow-hidden">
           <Link href={`/product/${id}`}>
             <img
-              src={product.imageUrl}
+              src={product.images[0]?.url ?? ""}
               alt={product.name}
               className="size-full rounded-md object-contain"
               loading="lazy"
