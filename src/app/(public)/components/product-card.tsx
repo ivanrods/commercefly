@@ -65,7 +65,8 @@ export function ProductCard({ product, id }: ProductCardProps) {
             addItem(product.id);
           }}
         >
-          Add to Cart
+          {" "}
+          Adicionar ao carrinho
         </Button>
       </CardFooter>
     </Card>

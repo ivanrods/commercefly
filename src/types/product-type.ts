@@ -16,6 +16,7 @@ export type Product = {
   isFeatured: boolean;
   price: number;
   stock: number;
+  rating: number;
   stripePriceId: string | null;
   stripeProductId: string | null;
 };

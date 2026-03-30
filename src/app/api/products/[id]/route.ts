@@ -9,7 +9,7 @@ interface Params {
 
 export async function GET(req: Request, { params }: Params) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json({ error: "ID não informado" }, { status: 400 });
@@ -19,14 +19,13 @@ export async function GET(req: Request, { params }: Params) {
       where: {
         id,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        images: true,
-        stock: true,
-        isFeatured: true,
+      include: {
+        images: {
+          select: {
+            id: true,
+            url: true,
+          },
+        },
         category: {
           select: {
             id: true,
@@ -34,7 +33,12 @@ export async function GET(req: Request, { params }: Params) {
             slug: true,
           },
         },
-        createdAt: true,
+        likes: {
+          select: {
+            userId: true,
+          },
+        },
+        orderItems: true,
       },
     });
 
@@ -49,6 +53,7 @@ export async function GET(req: Request, { params }: Params) {
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Erro ao buscar produto";
+
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
