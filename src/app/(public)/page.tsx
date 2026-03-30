@@ -13,7 +13,7 @@ type IconName = keyof typeof LucideIcons;
 export default async function HomePage() {
   const { products } = await getProducts({
     page: 1,
-    limit: 10,
+    limit: 12,
   });
 
   const { categories } = await getCategories({
