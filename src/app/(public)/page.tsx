@@ -12,7 +12,6 @@ import { ArrowRight } from "lucide-react";
 type IconName = keyof typeof LucideIcons;
 
 export default async function HomePage() {
-  await new Promise((resolve) => setTimeout(resolve, 4000));
   const { products } = await getProducts({
     page: 1,
     limit: 12,
