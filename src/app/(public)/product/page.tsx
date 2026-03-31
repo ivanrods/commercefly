@@ -7,7 +7,7 @@ import { ProductCard } from "../components/product-card";
 export default async function CategoryPage() {
   const { products } = await getProducts({
     page: 1,
-    limit: 10,
+    limit: 20,
   });
 
   return (
