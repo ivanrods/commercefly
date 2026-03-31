@@ -1,7 +1,7 @@
 import { getCategories } from "src/services/category-service";
 
 import * as LucideIcons from "lucide-react";
-
+import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -47,8 +47,8 @@ export default async function HomePage() {
 
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((category) => {
-            const Icon =
-              LucideIcons[category.imageUrl as IconName] ?? LucideIcons.X;
+            const Icon = (LucideIcons[category.imageUrl as IconName] ??
+              LucideIcons.X) as LucideIcon;
 
             return (
               <CategoryCard

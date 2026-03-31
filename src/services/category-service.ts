@@ -47,6 +47,7 @@ export async function getCategoryBySlug(slug: string) {
         include: {
           images: {
             select: {
+              id: true,
               url: true,
             },
           },

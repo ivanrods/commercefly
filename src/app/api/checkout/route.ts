@@ -23,7 +23,11 @@ export async function POST() {
     include: {
       items: {
         include: {
-          product: true,
+          product: {
+            include: {
+              images: true,
+            },
+          },
         },
       },
     },
@@ -38,7 +42,7 @@ export async function POST() {
       currency: "brl",
       product_data: {
         name: item.product.name,
-        images: [item.product.imageUrl],
+        images: [item.product.images?.[0]?.url ?? ""],
       },
       unit_amount: item.product.price * 100,
     },

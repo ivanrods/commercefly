@@ -1,6 +1,7 @@
 import { getCategories } from "src/services/category-service";
 import { getProducts } from "src/services/product-service";
 import * as LucideIcons from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { CategoryCard } from "./components/categories-card";
 import { ProductCard } from "./components/product-card";
 import StorefrontHero from "src/app/(public)/components/storefront-hero";
@@ -57,8 +58,8 @@ export default async function HomePage() {
 
           <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {categories.map((category) => {
-              const Icon =
-                LucideIcons[category.imageUrl as IconName] ?? LucideIcons.X;
+              const Icon = (LucideIcons[category.imageUrl as IconName] ??
+                LucideIcons.X) as LucideIcon;
 
               return (
                 <CategoryCard

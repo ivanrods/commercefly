@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Badge } from "src/components/ui/badge";
 import { Button } from "src/components/ui/button";
 
-import { Heart, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -97,22 +97,26 @@ export default function ProductPage() {
 
             <div className="flex flex-wrap gap-4">
               <div className="flex flex-wrap gap-4">
-                {product.images.map((image, index) => (
-                  <div
-                    key={image.id}
-                    onMouseEnter={() => setSelectedImage(index)}
-                    className={cn(
-                      "ring-offset-background size-16 cursor-pointer overflow-hidden rounded-sm ring-offset-2 transition-all lg:size-18",
-                      selectedImage === index && "ring-foreground ring-2",
-                    )}
-                  >
-                    <img
-                      src={image.url ?? ""}
-                      alt={product.name}
-                      className="size-full object-cover"
-                    />
-                  </div>
-                ))}
+                <div className="flex flex-wrap gap-4">
+                  {product.images.map((image, index) => (
+                    <div
+                      key={image.id}
+                      onMouseEnter={() => setSelectedImage(index)}
+                      className={cn(
+                        "ring-offset-background relative size-16 cursor-pointer overflow-hidden rounded-sm ring-offset-2 transition-all lg:size-18",
+                        selectedImage === index && "ring-foreground ring-2",
+                      )}
+                    >
+                      <Image
+                        src={image.url ?? ""}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -122,11 +126,15 @@ export default function ProductPage() {
               <CarouselContent>
                 {product.images.map((image) => (
                   <CarouselItem key={image.id}>
-                    <img
-                      src={image.url ?? ""}
-                      alt={product.name}
-                      className="size-full rounded-lg object-cover"
-                    />
+                    <div className="relative aspect-square">
+                      <Image
+                        src={image.url ?? ""}
+                        alt={product.name}
+                        fill
+                        className="rounded-lg object-cover"
+                        priority
+                      />
+                    </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
