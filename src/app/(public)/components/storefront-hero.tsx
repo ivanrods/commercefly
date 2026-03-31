@@ -8,7 +8,6 @@ import { Card, CardContent } from "../../../components/ui/card";
 import {
   Search,
   ArrowRight,
-  Star,
   TrendingUp,
   ShoppingBag,
   Flame,
@@ -18,6 +17,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "../../../components/ui/carousel";
+import Image from "next/image";
 
 interface Product {
   id: number;
@@ -39,8 +39,7 @@ const storeData = {
     {
       id: 1,
       name: "Classic Watch",
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&dpr=2&q=40",
+      image: "https://i.ibb.co/rRxYWWD9/clock.jpg",
       price: 299,
       rating: 4.9,
       reviews: 128,
@@ -50,8 +49,7 @@ const storeData = {
     {
       id: 2,
       name: "Premium Headphones",
-      image:
-        "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=500&q=40",
+      image: "https://i.ibb.co/sp3PzjXj/phone.jpg",
       price: 199,
       rating: 4.8,
       reviews: 256,
@@ -62,8 +60,7 @@ const storeData = {
     {
       id: 3,
       name: "Luxury Sunglasses",
-      image:
-        "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&dpr=2&q=40",
+      image: "https://i.ibb.co/nqzMvMqR/cles.jpg",
       price: 159,
       rating: 4.7,
       reviews: 189,
@@ -74,8 +71,7 @@ const storeData = {
     {
       id: 4,
       name: "Smart Watch Pro",
-      image:
-        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&dpr=2&q=40",
+      image: "https://i.ibb.co/4whL2xDk/wach.webp",
       price: 349,
       rating: 4.9,
       reviews: 312,
@@ -113,7 +109,7 @@ export default function StorefrontHero() {
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <header className="space-y-8">
             <Badge variant="outline" className="rounded-full px-4 py-2">
-              <TrendingUp className="me-1 !size-4" />
+              <TrendingUp className="me-1 size-4!" />
               Nova Coleção 2026
             </Badge>
 
@@ -134,10 +130,10 @@ export default function StorefrontHero() {
                 className="h-14 rounded-full pe-4 pl-12 text-lg"
                 aria-label="Search products"
               />
-              <Search className="text-muted-foreground absolute start-4 top-1/2 size-5 -translate-y-1/2" />
+              <Search className="text-muted-foreground absolute inset-s-4 top-1/2 size-5 -translate-y-1/2" />
               <Button
                 size="lg"
-                className="absolute end-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full px-6"
+                className="absolute inset-e-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full px-6"
               >
                 Pesquisar
               </Button>
@@ -163,7 +159,7 @@ export default function StorefrontHero() {
           </header>
 
           <div className="flex flex-col gap-4">
-            <div className="relative h-[500px] w-full border-0">
+            <div className="relative h-125 w-full border-0">
               <Carousel
                 className="group size-full"
                 setApi={setApi}
@@ -184,12 +180,13 @@ export default function StorefrontHero() {
                     <CarouselItem key={product.id} className="h-full">
                       <Card className="relative size-full overflow-hidden py-4">
                         <CardContent className="px-4">
-                          <div className="relative size-full overflow-hidden rounded-md">
-                            <img
-                              src={product.image}
+                          <div className="relative h-125 w-full overflow-hidden rounded-md">
+                            <Image
+                              src={product.image || "/placeholder.svg"}
                               alt={product.name}
-                              className="h-[500px] w-full object-cover"
-                              loading="lazy"
+                              fill
+                              className="object-cover"
+                              sizes="100vw"
                             />
                           </div>
                           <div className="from-background/90 via-background/30 absolute inset-0 bg-linear-to-t to-transparent" />
@@ -211,14 +208,14 @@ export default function StorefrontHero() {
                                   size="lg"
                                   className="cursor-pointer rounded-full"
                                 >
-                                  Shop Now
+                                  Compre agora
                                 </Button>
                               </div>
                             </div>
                           </div>
 
                           {product.trending && (
-                            <div className="text-background-foreground bg-foreground/10 dark:bg-background/20 absolute end-8 top-8 flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium backdrop-blur-xs">
+                            <div className="text-background-foreground bg-foreground/10 dark:bg-background/20 absolute inset-e-8 top-8 flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium backdrop-blur-xs">
                               <Flame className="size-4" /> Tendências
                             </div>
                           )}

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
 import { Card, CardContent, CardFooter } from "src/components/ui/card";
@@ -22,21 +23,15 @@ export function ProductCard({ product, id }: ProductCardProps) {
       className="flex flex-col gap-4 overflow-hidden rounded-lg py-4 shadow-none transition-shadow duration-300 hover:shadow-md"
     >
       <CardContent className="flex flex-1 flex-col gap-4 px-4">
-        {" "}
-        <div className="aspect-square overflow-hidden">
-          <Link href={`/product/${id}`}>
-            <img
-              src={product.images[0]?.url ?? ""}
+        <div className="aspect-square overflow-hidden relative">
+          <Link href={`/product/${id}`} className="block size-full">
+            <Image
+              src={product.images[0]?.url || "/placeholder.svg"}
               alt={product.name}
-              className="size-full rounded-md object-contain"
-              loading="lazy"
-              width={400}
-              height={400}
-            />
-            <img
-              src="https://ui.shadcn.com/placeholder.svg"
-              alt="placeholder image"
-              className="rounded-md dark:brightness-[0.95] dark:invert"
+              fill
+              className="rounded-md object-contain"
+              sizes="(max-width: 768px) 100vw, 400px"
+              priority={false}
             />
           </Link>
         </div>
@@ -48,7 +43,7 @@ export function ProductCard({ product, id }: ProductCardProps) {
             <p className="font-semibold">{formatCurrency(product.price)}</p>
 
             <p className="text-muted-foreground text-sm line-through md:text-base xl:text-sm 2xl:text-base">
-              {formatCurrency(product.price + 30)}
+              {formatCurrency(product.price + product.price * 0.05)}
             </p>
           </div>
         </div>
