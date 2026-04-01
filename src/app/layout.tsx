@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "../components/header/site-header";
 import { ReactQueryProvider } from "src/providers/react-query-provider";
+import { BottomNav } from "src/components/bottom-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           >
             <SiteHeader />
             {children}
+            <BottomNav />
           </body>
         </html>
       </ReactQueryProvider>
