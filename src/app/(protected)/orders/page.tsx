@@ -1,9 +1,30 @@
 import { auth } from "@clerk/nextjs/server";
+import { ShoppingBag } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Badge } from "src/components/ui/badge";
-import { Card } from "src/components/ui/card";
+import { Button } from "src/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "src/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "src/components/ui/table";
 import { formatCurrency } from "src/helpers/format-currency";
 import prisma from "src/lib/prisma";
+import { getOrders } from "src/services/orders-service";
 
 export default async function OrdersPage() {
   const { userId: clerkId } = await auth();
@@ -20,66 +41,99 @@ export default async function OrdersPage() {
     return <div>Usuário não encontrado</div>;
   }
 
-  const orders = await prisma.order.findMany({
-    where: {
-      userId: user.id,
-    },
-    include: {
-      items: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  const orders = await getOrders(user.id);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Meus pedidos</h1>
-
+    <div className="mx-auto">
       {orders.length === 0 ? (
-        <p>Você ainda não fez nenhum pedido.</p>
+        <Card className="border-dashed m-8">
+          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+            <ShoppingBag className="text-muted-foreground/50 mb-4 size-12" />
+            <h3 className="text-lg font-medium">Você não tem nenhum pedido</h3>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Faça sua primeira compra.
+            </p>
+            <Link href="/">
+              <Button className="mt-4 cursor-pointer" variant="outline">
+                Continuar comprando
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       ) : (
-        <div>
-          {orders.map((order) => (
-            <Card key={order.id} className="p-4 mb-4">
-              <div className="flex justify-between ">
-                <div>
-                  <p className="font-semibold">Pedido #{order.orderNumber}</p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <div className="text-right">
-                  <p className="font-bold">
-                    {formatCurrency(order.totalAmount / 100)}
-                  </p>
-
-                  <Badge>{order.status}</Badge>
-                </div>
+        <div className="p-6">
+          <Card className="mx-auto my-6 max-w-(--breakpoint-xl)">
+            <CardHeader className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:gap-x-6">
+              <div>
+                <CardTitle className="text-2xl">Histórico de pedidos</CardTitle>
+                <CardDescription className="text-balance">
+                  Veja seus pedidos anteriores e o status deles.
+                </CardDescription>
               </div>
-
-              <div className="space-y-2">
-                {order.items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex justify-between text-sm border-t pt-2"
-                  >
-                    <div>
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-gray-500">
-                        Quantidade: {item.quantity}
-                      </p>
-                    </div>
-
-                    <p className="font-medium">
-                      {formatCurrency(item.price / 100)}
-                    </p>
-                  </div>
-                ))}
+              <div className="text-muted-foreground text-end text-sm max-sm:text-start">
+                <p>Total de pedidos: {orders.length}</p>
               </div>
-            </Card>
-          ))}
+            </CardHeader>
+            {orders.map((order) => (
+              <CardContent key={order.id}>
+                <p>Pedido: {order.orderNumber}</p>
+                <Badge>{order.status}</Badge>
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="font-semibold">Produto</TableHead>
+                      <TableHead className="text-end font-semibold">
+                        Data do pedido
+                      </TableHead>
+                      <TableHead className="text-end font-semibold">
+                        Quantidade
+                      </TableHead>
+                      <TableHead className="text-end font-semibold">
+                        Preço
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {order.items.map((item, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="flex items-center gap-3">
+                          <div className="relative w-16 h-16">
+                            <Image
+                              src={item.product.images[0].url}
+                              alt={item.name}
+                              fill
+                              className="rounded-md object-cover"
+                              sizes="64px"
+                            />
+                          </div>
+                          <div>
+                            <p className="font-medium">{item.name}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-end">
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="text-end">
+                          {item.quantity}
+                        </TableCell>
+                        <TableCell className="text-end">
+                          {formatCurrency(item.price / 100)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                  <TableFooter className="bg-transparent">
+                    <TableRow className="font-semibold hover:bg-transparent">
+                      <TableCell colSpan={3}></TableCell>
+                      <TableCell className="text-end">
+                        {formatCurrency(order.totalAmount / 100)}
+                      </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </CardContent>
+            ))}
+          </Card>
         </div>
       )}
     </div>
