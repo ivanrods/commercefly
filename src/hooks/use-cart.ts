@@ -5,6 +5,7 @@ import {
   getCart,
   removeFromCart,
 } from "src/services/cart-service";
+import { toast } from "sonner";
 
 export function useCart() {
   return useQuery({
@@ -22,6 +23,14 @@ export function useAddCart() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["cart"],
+      });
+      toast.success("Produto adicionado ao carrinho", {
+        position: "top-center",
+      });
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || "Erro ao adicionar ao carrinho", {
+        position: "top-center",
       });
     },
   });

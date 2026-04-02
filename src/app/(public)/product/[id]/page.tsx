@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Badge } from "src/components/ui/badge";
 import { Button } from "src/components/ui/button";
-
+import { toast } from "sonner";
 import { Star } from "lucide-react";
 import {
   Carousel,
@@ -21,6 +21,7 @@ import { cn } from "src/lib/utils";
 import { Product } from "src/types/product-type";
 import { useAddCart } from "src/hooks/use-cart";
 import { Skeleton } from "src/components/ui/skeleton";
+import { useUser } from "@clerk/nextjs";
 
 export default function ProductPage() {
   const params = useParams();
@@ -32,6 +33,8 @@ export default function ProductPage() {
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  const { isSignedIn, isLoaded } = useUser();
 
   useEffect(() => {
     if (!id) return;
@@ -54,6 +57,24 @@ export default function ProductPage() {
 
     fetchProduct();
   }, [id]);
+
+  function handleAddToCart() {
+    if (!isLoaded) return;
+
+    if (!isSignedIn) {
+      toast.error("Faça login para adicionar ao carrinho", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    if (!product) {
+      toast.error("Produto não encontrado", { position: "top-center" });
+      return;
+    }
+
+    addItem(product.id);
+  }
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -249,9 +270,7 @@ export default function ProductPage() {
               <Button
                 className=" cursor-pointer rounded-full"
                 size="lg"
-                onClick={() => {
-                  addItem(product.id);
-                }}
+                onClick={handleAddToCart}
               >
                 Adicionar ao carrinho
               </Button>

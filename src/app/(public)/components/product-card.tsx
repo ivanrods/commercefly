@@ -1,9 +1,10 @@
 "use client";
+import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
 import { Card, CardContent, CardFooter } from "src/components/ui/card";
-
+import { toast } from "sonner";
 import { formatCurrency } from "src/helpers/format-currency";
 import { useAddCart } from "src/hooks/use-cart";
 
@@ -16,6 +17,20 @@ type ProductCardProps = {
 
 export function ProductCard({ product, id }: ProductCardProps) {
   const { mutate: addItem } = useAddCart();
+  const { isSignedIn, isLoaded } = useUser();
+
+  function handleAddToCart() {
+    if (!isLoaded) return;
+
+    if (!isSignedIn) {
+      toast.error("Faça login para adicionar ao carrinho", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    addItem(product.id);
+  }
 
   return (
     <Card
@@ -54,11 +69,7 @@ export function ProductCard({ product, id }: ProductCardProps) {
           variant="outline"
           size="sm"
           className="w-full cursor-pointer text-sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            addItem(product.id);
-          }}
+          onClick={handleAddToCart}
         >
           {" "}
           Adicionar ao carrinho
