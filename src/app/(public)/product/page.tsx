@@ -1,17 +1,32 @@
 import { Button } from "src/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "src/components/ui/pagination";
+
 import Link from "next/link";
 import { getProducts } from "src/services/product-service";
 import { ProductCard } from "../components/product-card";
 
-export default async function CategoryPage() {
-  const { products } = await getProducts({
-    page: 1,
-    limit: 20,
+export default async function ProductPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const { page } = params;
+  const { products, totalPages } = await getProducts({
+    page: page ? Number(page) : 1,
+    limit: 12,
   });
 
   return (
-    <section className="w-full px-8 py-12">
+    <section className="w-full px-8 py-12 md:px-16">
       <header className="mx-auto mb-12 ">
         <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
           <div className="space-y-4">
@@ -39,13 +54,44 @@ export default async function CategoryPage() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6 xl:grid-cols-6">
+      <div className="grid grid-cols-1 mb-8 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6 xl:grid-cols-6 ">
         {products.map((product) => {
           return (
             <ProductCard key={product.id} product={product} id={product.id} />
           );
         })}
       </div>
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href={`?page=${Math.max(1, Number(page) - 1)}`}
+            />
+          </PaginationItem>
+
+          {Array.from({ length: totalPages }).map((_, index) => {
+            const pageNumber = index + 1;
+
+            return (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink
+                  href={`?page=${pageNumber}`}
+                  isActive={pageNumber === Number(page)}
+                >
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+
+          <PaginationItem>
+            <PaginationNext
+              href={`?page=${Math.min(totalPages, Number(page) + 1)}`}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </section>
   );
 }
