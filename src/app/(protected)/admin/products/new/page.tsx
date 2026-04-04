@@ -91,7 +91,7 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className="max-w-xl mx-auto px-4 ">
       <FieldSet>
         <FieldLegend>Novo Produto</FieldLegend>
         <FieldDescription>Pagina para adicionar produtos</FieldDescription>

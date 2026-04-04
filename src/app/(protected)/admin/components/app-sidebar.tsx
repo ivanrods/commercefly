@@ -1,4 +1,4 @@
-import { Plus, List, BarChart } from "lucide-react";
+import { Plus, List, BarChart, Users, ShoppingCart, Tags } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -12,25 +12,42 @@ import {
 
 const data = [
   {
-    title: "Criar produto",
-    url: "/admin/products/new",
-    icon: Plus,
-  },
-  {
     title: "Lista de produtos",
     url: "/admin/products",
     icon: List,
   },
   {
-    title: "Analise",
-    url: "/admin/products",
+    title: "Criar produto",
+    url: "/admin/products/new",
+    icon: Plus,
+  },
+  {
+    title: "Criar categoria",
+    url: "/admin/categories/new",
+    icon: Tags,
+  },
+
+  {
+    title: "Pedidos",
+    url: "/admin/orders",
+    icon: ShoppingCart,
+  },
+
+  {
+    title: "Lista de usuários",
+    url: "/admin/users",
+    icon: Users,
+  },
+  {
+    title: "Análise",
+    url: "/admin/products/analytics",
     icon: BarChart,
   },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar className="relative " collapsible="icon" {...props}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent className="flex flex-col gap-2">
