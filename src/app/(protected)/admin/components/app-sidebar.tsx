@@ -1,4 +1,12 @@
-import { Plus, List, BarChart, Users, ShoppingCart, Tags } from "lucide-react";
+import {
+  Plus,
+  List,
+  BarChart,
+  Users,
+  ShoppingCart,
+  Tags,
+  Logs,
+} from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -20,6 +28,11 @@ const data = [
     title: "Criar produto",
     url: "/admin/products/new",
     icon: Plus,
+  },
+  {
+    title: "Lista de categorias",
+    url: "/admin/categories",
+    icon: Logs,
   },
   {
     title: "Criar categoria",
