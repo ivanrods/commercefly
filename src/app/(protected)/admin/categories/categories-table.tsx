@@ -1,3 +1,4 @@
+"use client";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import { Button } from "src/components/ui/button";
@@ -22,6 +23,29 @@ type CategoriesTableProps = {
 };
 
 export function CategoriesTable({ categories }: CategoriesTableProps) {
+  async function handleDelete(slug: string) {
+    const confirmDelete = confirm("Tem certeza que deseja deletar?");
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`/api/categories/${slug}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error);
+        return;
+      }
+
+      alert("Categoria deletada com sucesso");
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao deletar categoria");
+    }
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -55,7 +79,10 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                   <DropdownMenuItem>Edit</DropdownMenuItem>
                   <DropdownMenuItem>Duplicate</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem variant="destructive">
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={() => handleDelete(category.slug)}
+                  >
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>

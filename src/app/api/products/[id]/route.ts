@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
+import { requireAdmin } from "src/lib/auth";
 
 interface Params {
   params: {
@@ -60,6 +61,8 @@ export async function GET(req: Request, { params }: Params) {
 
 export async function DELETE(req: Request, { params }: Params) {
   try {
+    await requireAdmin();
+
     const { id } = await params;
 
     if (!id) {

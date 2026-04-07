@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
+import { requireAdmin } from "src/lib/auth";
 interface Params {
   params: {
     slug: string;
@@ -46,5 +47,33 @@ export async function GET(req: Request, { params }: Params) {
       error instanceof Error ? error.message : "Erro ao buscar categoria";
 
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request, { params }: Params) {
+  try {
+    await requireAdmin();
+
+    const { slug } = await params;
+
+    if (!slug) {
+      return NextResponse.json(
+        { error: "Categoria não encontrada" },
+        { status: 400 },
+      );
+    }
+
+    await prisma.category.delete({
+      where: { slug },
+    });
+
+    return NextResponse.json({ message: "Categoria deletada" });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { error: "Erro ao deletar categoria" },
+      { status: 500 },
+    );
   }
 }
