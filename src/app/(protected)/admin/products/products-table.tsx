@@ -174,6 +174,29 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const product = row.original;
 
+      async function handleDelete() {
+        const confirmDelete = confirm("Tem certeza que deseja deletar?");
+        if (!confirmDelete) return;
+
+        try {
+          const res = await fetch(`/api/products/${product.id}`, {
+            method: "DELETE",
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            alert(data.error);
+            return;
+          }
+
+          alert("Produto deletado com sucesso");
+        } catch (error) {
+          console.error(error);
+          alert("Erro ao deletar produto");
+        }
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -195,7 +218,7 @@ export const columns: ColumnDef<Product>[] = [
 
             <DropdownMenuItem>Editar</DropdownMenuItem>
 
-            <DropdownMenuItem className="text-red-600">
+            <DropdownMenuItem className="text-red-600" onClick={handleDelete}>
               Excluir
             </DropdownMenuItem>
           </DropdownMenuContent>
