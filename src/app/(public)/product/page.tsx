@@ -26,7 +26,7 @@ export default async function ProductPage({
   });
 
   return (
-    <section className="w-full px-8 py-12 md:px-16">
+    <section className="max-w-screen-2xl mx-auto px-8 py-12 md:px-4">
       <header className="mx-auto mb-12 ">
         <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
           <div className="space-y-4">
