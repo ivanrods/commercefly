@@ -26,6 +26,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "src/components/ui/combobox";
+import { Skeleton } from "src/components/ui/skeleton";
 
 const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -118,7 +119,72 @@ export default function EditProductPage() {
     }
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading)
+    return (
+      <div className="max-w-xl mx-auto px-4 animate-pulse">
+        <FieldSet>
+          <FieldLegend>
+            <Skeleton className="h-6 w-48 rounded-md" />
+          </FieldLegend>
+          <FieldDescription>
+            <Skeleton className="h-4 w-64 rounded-md" />
+          </FieldDescription>
+
+          <FieldGroup className="mt-4 space-y-4">
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-32 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-10 w-full rounded-md" />
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-32 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-24 w-full rounded-md" />
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-24 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-10 w-1/2 rounded-md" />
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-24 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-10 w-full rounded-md" />
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-24 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-10 w-1/4 rounded-md" />
+            </Field>
+
+            <Field>
+              <FieldLabel>
+                <Skeleton className="h-4 w-32 rounded-md" />
+              </FieldLabel>
+              <Skeleton className="h-10 w-full rounded-md" />
+            </Field>
+
+            <Field orientation="horizontal" className="items-center space-x-2">
+              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="h-4 w-32 rounded-md" />
+            </Field>
+
+            <Button disabled className="w-full">
+              <Skeleton className="h-10 w-full rounded-md" />
+            </Button>
+          </FieldGroup>
+        </FieldSet>
+      </div>
+    );
 
   return (
     <div className="max-w-xl mx-auto px-4">
