@@ -1,5 +1,6 @@
 "use client";
 import { MoreHorizontalIcon } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "src/components/ui/button";
 import {
@@ -76,8 +77,12 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/admin/categories/update/${category.slug}`}>
+                      Editar
+                    </Link>
+                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     variant="destructive"
