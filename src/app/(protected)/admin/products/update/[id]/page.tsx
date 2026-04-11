@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +31,7 @@ const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
   price: z.coerce.number().min(1, "Preço inválido"),
-  images: z.array(z.string().url("URL inválida")).min(1, "Adicione uma imagem"),
+  images: z.array(z.string().url("URL inválida")).min(1),
   stock: z.coerce.number().min(0),
   categoryId: z.string().min(1, "Selecione uma categoria"),
   isFeatured: z.boolean(),
@@ -39,9 +39,13 @@ const productSchema = z.object({
 
 type FormData = z.infer<typeof productSchema>;
 
-export default function NewProductPage() {
+export default function EditProductPage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+
   const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -71,73 +75,92 @@ export default function NewProductPage() {
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        const product = await res.json();
+
+        setValue("name", product.name);
+        setValue("description", product.description);
+        setValue("price", product.price);
+        setValue(
+          "images",
+          product.images.map((img: any) => img.url),
+        );
+        setValue("stock", product.stock);
+        setValue("categoryId", product.categoryId);
+        setValue("isFeatured", product.isFeatured);
+      } catch (err) {
+        console.error(err);
+        alert("Erro ao carregar produto");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (id) loadProduct();
+  }, [id, setValue]);
+
   const onSubmit = async (data: FormData) => {
     try {
-      await fetch("/api/products", {
-        method: "POST",
+      await fetch(`/api/products/${id}`, {
+        method: "PUT",
         credentials: "include",
-        body: JSON.stringify({
-          ...data,
-          price: data.price,
-        }),
+        body: JSON.stringify(data),
       });
 
-      alert("Produto criado com sucesso!");
+      alert("Produto atualizado com sucesso!");
       router.push("/admin/products");
     } catch (err) {
       console.error(err);
-      alert("Erro ao criar produto");
+      alert("Erro ao atualizar produto");
     }
   };
 
+  if (loading) return <p>Carregando...</p>;
+
   return (
-    <div className="max-w-xl mx-auto px-4 ">
+    <div className="max-w-xl mx-auto px-4">
       <FieldSet>
-        <FieldLegend>Novo Produto</FieldLegend>
-        <FieldDescription>Pagina para adicionar produtos</FieldDescription>
+        <FieldLegend>Editar Produto</FieldLegend>
+        <FieldDescription>Atualize os dados do produto</FieldDescription>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
               <FieldLabel>Nome do produto</FieldLabel>
-              <Input {...register("name")} placeholder="Nome" />
+              <Input {...register("name")} />
               <p className="text-red-500 text-sm">{errors.name?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Descrição do produto</FieldLabel>
-              <Textarea {...register("description")} placeholder="Descrição" />
+              <FieldLabel>Descrição</FieldLabel>
+              <Textarea {...register("description")} />
               <p className="text-red-500 text-sm">
                 {errors.description?.message}
               </p>
             </Field>
 
             <Field>
-              <FieldLabel>Preço do produto</FieldLabel>
-              <Input {...register("price")} placeholder="ex: 50 ou 50,99" />
+              <FieldLabel>Preço</FieldLabel>
+              <Input {...register("price")} />
               <p className="text-red-500 text-sm">{errors.price?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Link da Imagem</FieldLabel>
-              <Input
-                placeholder="https://..."
-                onChange={(e) => setValue("images", [e.target.value])}
-              />
+              <FieldLabel>Imagem</FieldLabel>
+              <Input onChange={(e) => setValue("images", [e.target.value])} />
               <p className="text-red-500 text-sm">{errors.images?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Quantidade disponível</FieldLabel>
-              <Input
-                type="number"
-                {...register("stock")}
-                placeholder="Estoque"
-              />
+              <FieldLabel>Estoque</FieldLabel>
+              <Input type="number" {...register("stock")} />
             </Field>
 
             <Field>
-              <FieldLabel>Categoria do produto</FieldLabel>
+              <FieldLabel>Categoria</FieldLabel>
 
               <Combobox
                 items={categories}
@@ -148,7 +171,7 @@ export default function NewProductPage() {
                 <ComboboxInput placeholder="Selecione uma categoria" />
 
                 <ComboboxContent>
-                  <ComboboxEmpty>Nenhuma categoria encontrada.</ComboboxEmpty>
+                  <ComboboxEmpty>Nenhuma categoria encontrada</ComboboxEmpty>
 
                   <ComboboxList>
                     {(item) => (
@@ -172,11 +195,9 @@ export default function NewProductPage() {
               <FieldLabel>Produto em destaque?</FieldLabel>
             </Field>
 
-            <Field orientation="horizontal">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Criando..." : "Criar produto"}
-              </Button>
-            </Field>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Atualizando..." : "Atualizar produto"}
+            </Button>
           </FieldGroup>
         </form>
       </FieldSet>
