@@ -23,7 +23,7 @@ export default async function HomePage() {
   });
 
   return (
-    <main className="space-y-4 flex flex-col items-center p-4 lg:p-2">
+    <main className="space-y-4 flex flex-col items-center ">
       <StorefrontHero />
 
       <section className="relative w-full py-12 md:py-16 lg:py-20">
@@ -75,7 +75,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-screen-2xl py-12">
+      <section className="max-w-screen-2xl py-8 px-4">
         <header className="mx-auto mb-12 ">
           <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
             <div className="space-y-4">

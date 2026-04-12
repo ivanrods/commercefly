@@ -60,7 +60,7 @@ export default async function OrdersPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="p-6">
+        <div className="p-2">
           <Card className="mx-auto my-6 max-w-(--breakpoint-xl)">
             <CardHeader className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:gap-x-6">
               <div>

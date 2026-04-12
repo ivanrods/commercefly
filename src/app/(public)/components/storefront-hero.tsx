@@ -105,7 +105,7 @@ export default function StorefrontHero() {
 
   return (
     <section className="from-background to-accent/20 relative bg-linear-to-b">
-      <div className="relative container mx-auto px-4 py-16 md:px-8 lg:px-12 lg:py-20">
+      <div className="relative container mx-auto md:px-8 lg:px-12 lg:py-20">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 ">
           <header className="space-y-8">
             <Badge variant="outline" className="rounded-full px-4 py-2">

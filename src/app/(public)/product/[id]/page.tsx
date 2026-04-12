@@ -96,7 +96,7 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <section className="@container mx-auto max-w-7xl md:mt-32">
+      <section className="@container mx-auto  max-w-7xl md:mt-32">
         <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2 lg:gap-8 lg:p-6 xl:grid-cols-3 xl:gap-12 xl:p-12">
           <div className="flex flex-col justify-between gap-6 lg:gap-8">
             <div className="space-y-4">
@@ -151,7 +151,7 @@ export default function ProductPage() {
   }
   if (!product) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center px-4">
+      <div className="flex min-h-[60vh] items-center justify-center px-4 ">
         <div className="flex max-w-md flex-col items-center gap-4 text-center">
           <div className="bg-muted flex size-16 items-center justify-center rounded-full">
             <Store className="size-8 text-muted-foreground" />
@@ -176,7 +176,7 @@ export default function ProductPage() {
 
   return (
     <div>
-      <section className="@container mx-auto max-w-7xl md:mt-32">
+      <section className="@container mx-auto max-w-7xl md:mt-32 ">
         <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2 lg:gap-8 lg:p-6 xl:grid-cols-3 xl:gap-12 xl:p-12">
           <div className="flex flex-col justify-between gap-6 lg:gap-8">
             <div className="space-y-2 lg:space-y-4">
