@@ -26,13 +26,14 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "src/components/ui/combobox";
+import { Category } from "src/types/category-type";
 
 const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
-  price: z.coerce.number().min(1, "Preço inválido"),
+  price: z.number().min(1, "Preço inválido"),
   images: z.array(z.string().url("URL inválida")).min(1, "Adicione uma imagem"),
-  stock: z.coerce.number().min(0),
+  stock: z.number().min(0),
   categoryId: z.string().min(1, "Selecione uma categoria"),
   isFeatured: z.boolean(),
 });
@@ -41,7 +42,7 @@ type FormData = z.infer<typeof productSchema>;
 
 export default function NewProductPage() {
   const router = useRouter();
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const {
     register,
@@ -114,7 +115,10 @@ export default function NewProductPage() {
 
             <Field>
               <FieldLabel>Preço do produto</FieldLabel>
-              <Input {...register("price")} placeholder="ex: 50 ou 50,99" />
+              <Input
+                {...register("price", { valueAsNumber: true })}
+                placeholder="ex: 50 ou 50,99"
+              />
               <p className="text-red-500 text-sm">{errors.price?.message}</p>
             </Field>
 
@@ -131,7 +135,7 @@ export default function NewProductPage() {
               <FieldLabel>Quantidade disponível</FieldLabel>
               <Input
                 type="number"
-                {...register("stock")}
+                {...register("stock", { valueAsNumber: true })}
                 placeholder="Estoque"
               />
             </Field>

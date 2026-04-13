@@ -28,7 +28,7 @@ export function useAddCart() {
         position: "top-center",
       });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error?.message || "Erro ao adicionar ao carrinho", {
         position: "top-center",
       });

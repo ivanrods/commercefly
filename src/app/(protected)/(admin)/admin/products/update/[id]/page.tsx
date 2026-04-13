@@ -27,25 +27,31 @@ import {
   ComboboxList,
 } from "src/components/ui/combobox";
 import { Skeleton } from "src/components/ui/skeleton";
+import { Category } from "src/types/category-type";
 
 const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
-  price: z.coerce.number().min(1, "Preço inválido"),
+  price: z.number().min(1, "Preço inválido"),
   images: z.array(z.string().url("URL inválida")).min(1),
-  stock: z.coerce.number().min(0),
+  stock: z.number().min(0),
   categoryId: z.string().min(1, "Selecione uma categoria"),
   isFeatured: z.boolean(),
 });
 
 type FormData = z.infer<typeof productSchema>;
 
+type ProductImage = {
+  id: string;
+  url: string;
+};
+
 export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   const {
@@ -87,7 +93,7 @@ export default function EditProductPage() {
         setValue("price", product.price);
         setValue(
           "images",
-          product.images.map((img: any) => img.url),
+          product.images.map((img: ProductImage) => img.url),
         );
         setValue("stock", product.stock);
         setValue("categoryId", product.categoryId);
@@ -210,7 +216,7 @@ export default function EditProductPage() {
 
             <Field>
               <FieldLabel>Preço</FieldLabel>
-              <Input {...register("price")} />
+              <Input {...register("price", { valueAsNumber: true })} />
               <p className="text-red-500 text-sm">{errors.price?.message}</p>
             </Field>
 
@@ -222,7 +228,10 @@ export default function EditProductPage() {
 
             <Field>
               <FieldLabel>Estoque</FieldLabel>
-              <Input type="number" {...register("stock")} />
+              <Input
+                type="number"
+                {...register("stock", { valueAsNumber: true })}
+              />
             </Field>
 
             <Field>

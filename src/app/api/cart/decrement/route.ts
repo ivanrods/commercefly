@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-
 import { NextResponse } from "next/server";
 import prisma from "src/lib/prisma";
 
