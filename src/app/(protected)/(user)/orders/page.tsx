@@ -61,8 +61,8 @@ export default async function OrdersPage() {
         </Card>
       ) : (
         <div className="p-2">
-          <Card className="mx-auto my-6 max-w-(--breakpoint-xl)">
-            <CardHeader className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:gap-x-6">
+          <div className="mx-auto my-6 max-w-(--breakpoint-xl) space-y-4">
+            <header className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:gap-x-6">
               <div>
                 <CardTitle className="text-2xl">Histórico de pedidos</CardTitle>
                 <CardDescription className="text-balance">
@@ -72,67 +72,71 @@ export default async function OrdersPage() {
               <div className="text-muted-foreground text-end text-sm max-sm:text-start">
                 <p>Total de pedidos: {orders.length}</p>
               </div>
-            </CardHeader>
+            </header>
             {orders.map((order) => (
-              <CardContent key={order.id}>
-                <p>Pedido: {order.orderNumber}</p>
-                <Badge>{order.status}</Badge>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="font-semibold">Produto</TableHead>
-                      <TableHead className="text-end font-semibold">
-                        Data do pedido
-                      </TableHead>
-                      <TableHead className="text-end font-semibold">
-                        Quantidade
-                      </TableHead>
-                      <TableHead className="text-end font-semibold">
-                        Preço
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {order.items.map((item, i) => (
-                      <TableRow key={i}>
-                        <TableCell className="flex items-center gap-3">
-                          <div className="relative w-16 h-16">
-                            <Image
-                              src={item.product.images[0].url}
-                              alt={item.name}
-                              fill
-                              className="rounded-md object-cover"
-                              sizes="64px"
-                            />
-                          </div>
-                          <div>
-                            <p className="font-medium">{item.name}</p>
-                          </div>
-                        </TableCell>
+              <Card key={order.id}>
+                <CardHeader className="flex justify-between">
+                  <p>Pedido: {order.orderNumber}</p>
+                  <Badge>{order.status}</Badge>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="font-semibold">Produto</TableHead>
+                        <TableHead className="text-end font-semibold">
+                          Data do pedido
+                        </TableHead>
+                        <TableHead className="text-end font-semibold">
+                          Quantidade
+                        </TableHead>
+                        <TableHead className="text-end font-semibold">
+                          Preço
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {order.items.map((item, i) => (
+                        <TableRow key={i}>
+                          <TableCell className="flex items-center gap-3">
+                            <div className="relative w-16 h-16">
+                              <Image
+                                src={item.product.images[0].url}
+                                alt={item.name}
+                                fill
+                                className="rounded-md object-cover"
+                                sizes="64px"
+                              />
+                            </div>
+                            <div>
+                              <p className="font-medium">{item.name}</p>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-end">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="text-end">
+                            {item.quantity}
+                          </TableCell>
+                          <TableCell className="text-end">
+                            {formatCurrency(item.price / 100)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    <TableFooter className="bg-transparent">
+                      <TableRow className="font-semibold hover:bg-transparent">
+                        <TableCell colSpan={3}></TableCell>
                         <TableCell className="text-end">
-                          {new Date(order.createdAt).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell className="text-end">
-                          {item.quantity}
-                        </TableCell>
-                        <TableCell className="text-end">
-                          {formatCurrency(item.price / 100)}
+                          {formatCurrency(order.totalAmount / 100)}
                         </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                  <TableFooter className="bg-transparent">
-                    <TableRow className="font-semibold hover:bg-transparent">
-                      <TableCell colSpan={3}></TableCell>
-                      <TableCell className="text-end">
-                        {formatCurrency(order.totalAmount / 100)}
-                      </TableCell>
-                    </TableRow>
-                  </TableFooter>
-                </Table>
-              </CardContent>
+                    </TableFooter>
+                  </Table>
+                </CardContent>
+              </Card>
             ))}
-          </Card>
+          </div>
         </div>
       )}
     </div>

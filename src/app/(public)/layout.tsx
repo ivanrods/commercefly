@@ -9,7 +9,7 @@ export default function PublicLayout({
   return (
     <>
       <SiteHeader />
-      <main className="py-16 px-4">{children}</main>
+      <main className="max-w-screen-2xl mx-auto py-16 px-4">{children}</main>
       <BottomNav />
     </>
   );

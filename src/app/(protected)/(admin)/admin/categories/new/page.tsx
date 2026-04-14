@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { Input } from "src/components/ui/input";
 import {
@@ -53,16 +54,20 @@ export default function NewCategoryPage() {
         }),
       });
 
-      alert("Categoria criada com sucesso!");
+      toast.success("Categoria criada com sucesso!", {
+        position: "top-center",
+      });
       router.push("/admin/categories");
     } catch (err) {
       console.error(err);
-      alert("Erro ao criar categoria");
+      toast.error("Erro ao criar categoria", {
+        position: "top-center",
+      });
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4">
+    <div className="max-w-xl mx-auto p-4">
       <FieldSet>
         <FieldLegend>Nova Categoria</FieldLegend>
         <FieldDescription>Página para adicionar categorias</FieldDescription>

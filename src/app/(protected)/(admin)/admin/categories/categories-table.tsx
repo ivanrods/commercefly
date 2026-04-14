@@ -1,6 +1,7 @@
 "use client";
 import { MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { Button } from "src/components/ui/button";
 import {
@@ -36,11 +37,11 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error);
+        toast.error(data.error);
         return;
       }
 
-      alert("Categoria deletada com sucesso");
+      toast.success("Categoria deletada com sucesso");
     } catch (error) {
       console.error(error);
       alert("Erro ao deletar categoria");

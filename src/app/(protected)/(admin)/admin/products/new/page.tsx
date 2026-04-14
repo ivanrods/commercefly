@@ -27,6 +27,7 @@ import {
   ComboboxList,
 } from "src/components/ui/combobox";
 import { Category } from "src/types/category-type";
+import { toast } from "sonner";
 
 const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -83,16 +84,20 @@ export default function NewProductPage() {
         }),
       });
 
-      alert("Produto criado com sucesso!");
+      toast.success("Produto criado com sucesso!", {
+        position: "top-center",
+      });
       router.push("/admin/products");
     } catch (err) {
       console.error(err);
-      alert("Erro ao criar produto");
+      toast.error("Erro ao criar produto", {
+        position: "top-center",
+      });
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 ">
+    <div className="max-w-xl mx-auto p-4 ">
       <FieldSet>
         <FieldLegend>Novo Produto</FieldLegend>
         <FieldDescription>Pagina para adicionar produtos</FieldDescription>

@@ -39,8 +39,8 @@ import {
 } from "src/components/ui/table";
 import { Badge } from "src/components/ui/badge";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export const productSchema = z.object({
   id: z.string(),
@@ -188,14 +188,18 @@ export const columns: ColumnDef<Product>[] = [
           const data = await res.json();
 
           if (!res.ok) {
-            alert(data.error);
+            toast.error(data.error);
             return;
           }
 
-          alert("Produto deletado com sucesso");
+          toast.success("Produto deletado com sucesso", {
+            position: "top-center",
+          });
         } catch (error) {
           console.error(error);
-          alert("Erro ao deletar produto");
+          toast.error("Erro ao deletar produto", {
+            position: "top-center",
+          });
         }
       }
 

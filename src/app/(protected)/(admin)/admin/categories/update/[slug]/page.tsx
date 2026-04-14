@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { toast } from "sonner";
 import { Input } from "src/components/ui/input";
 import {
   Field,
@@ -51,7 +51,9 @@ export default function UpdateCategoryPage() {
         setValue("imageUrl", data.imageUrl || "");
       } catch (err) {
         console.error(err);
-        alert("Erro ao carregar categoria");
+        toast.error("Erro ao carregar categoria", {
+          position: "top-center",
+        });
       }
     };
 
@@ -74,16 +76,20 @@ export default function UpdateCategoryPage() {
         }),
       });
 
-      alert("Categoria atualizada com sucesso!");
+      toast.success("Categoria atualizada com sucesso!", {
+        position: "top-center",
+      });
       router.push("/admin/categories");
     } catch (err) {
       console.error(err);
-      alert("Erro ao atualizar categoria");
+      toast.error("Erro ao atualizar categoria", {
+        position: "top-center",
+      });
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4">
+    <div className="max-w-xl mx-auto p-4">
       <FieldSet>
         <FieldLegend>Editar Categoria</FieldLegend>
         <FieldDescription>Atualize os dados da categoria</FieldDescription>

@@ -28,6 +28,7 @@ import {
 } from "src/components/ui/combobox";
 import { Skeleton } from "src/components/ui/skeleton";
 import { Category } from "src/types/category-type";
+import { toast } from "sonner";
 
 const productSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -100,7 +101,9 @@ export default function EditProductPage() {
         setValue("isFeatured", product.isFeatured);
       } catch (err) {
         console.error(err);
-        alert("Erro ao carregar produto");
+        toast.error("Erro ao carregar produto", {
+          position: "top-center",
+        });
       } finally {
         setLoading(false);
       }
@@ -117,11 +120,15 @@ export default function EditProductPage() {
         body: JSON.stringify(data),
       });
 
-      alert("Produto atualizado com sucesso!");
+      toast.success("Produto atualizado com sucesso!", {
+        position: "top-center",
+      });
       router.push("/admin/products");
     } catch (err) {
       console.error(err);
-      alert("Erro ao atualizar produto");
+      toast.error("Erro ao atualizar produto", {
+        position: "top-center",
+      });
     }
   };
 
@@ -193,7 +200,7 @@ export default function EditProductPage() {
     );
 
   return (
-    <div className="max-w-xl mx-auto px-4">
+    <div className="max-w-xl mx-auto p-4">
       <FieldSet>
         <FieldLegend>Editar Produto</FieldLegend>
         <FieldDescription>Atualize os dados do produto</FieldDescription>

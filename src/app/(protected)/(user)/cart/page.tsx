@@ -32,6 +32,7 @@ import { checkout } from "src/services/checkout-service";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Skeleton } from "src/components/ui/skeleton";
+import Link from "next/link";
 
 export default function ShoppingCart1() {
   const router = useRouter();
@@ -110,7 +111,11 @@ export default function ShoppingCart1() {
                 <p className="text-muted-foreground mt-1 text-sm">
                   Adicione alguns itens para começar.
                 </p>
-                <Button className="mt-4 cursor-pointer" variant="outline">
+                <Button
+                  className="mt-4 cursor-pointer"
+                  variant="outline"
+                  onClick={() => router.push("/")}
+                >
                   Continuar comprando
                 </Button>
               </CardContent>

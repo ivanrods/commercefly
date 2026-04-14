@@ -56,7 +56,7 @@ export default async function HomePage() {
             </div>
           </header>
 
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="mx-auto max-w-5xl grid   grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {categories.map((category) => {
               const Icon = (LucideIcons[category.imageUrl as IconName] ??
                 LucideIcons.X) as LucideIcon;
@@ -75,7 +75,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-screen-2xl py-8 px-4">
+      <section className=" py-8 px-4 md:px-0">
         <header className="mx-auto mb-12 ">
           <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
             <div className="space-y-4">
