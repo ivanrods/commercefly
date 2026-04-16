@@ -1,11 +1,13 @@
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
+import { clerkClient } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 import prisma from "../../../../lib/prisma";
+
+const ADMIN_EMAIL = "contaivanrodrigues@gmail.com";
 
 export async function POST(req: NextRequest) {
   try {
     const evt = await verifyWebhook(req);
-
     const eventType = evt.type;
 
     console.log(
@@ -15,13 +17,29 @@ export async function POST(req: NextRequest) {
     if (eventType === "user.created") {
       const { id, email_addresses, first_name, last_name } = evt.data;
 
+      const email = email_addresses[0]?.email_address ?? "";
+      const name = `${first_name ?? ""} ${last_name ?? ""}`.trim();
+
+      const isAdmin = email === ADMIN_EMAIL;
+
+      const role = isAdmin ? "ADMIN" : "USER";
+
       await prisma.user.upsert({
         where: { clerkId: id },
         update: {},
         create: {
           clerkId: id,
-          email: email_addresses[0]?.email_address ?? "",
-          name: `${first_name ?? ""} ${last_name ?? ""}`.trim(),
+          email,
+          name,
+          role,
+        },
+      });
+
+      await (
+        await clerkClient()
+      ).users.updateUserMetadata(id, {
+        publicMetadata: {
+          role: "ADMIN",
         },
       });
     }
@@ -29,11 +47,32 @@ export async function POST(req: NextRequest) {
     if (eventType === "user.updated") {
       const { id, email_addresses, first_name, last_name } = evt.data;
 
-      await prisma.user.update({
+      const email = email_addresses[0]?.email_address ?? "";
+      const name = `${first_name ?? ""} ${last_name ?? ""}`.trim();
+
+      const isAdmin = email === ADMIN_EMAIL;
+      const role = isAdmin ? "ADMIN" : "USER";
+
+      await prisma.user.upsert({
         where: { clerkId: id },
-        data: {
-          email: email_addresses[0]?.email_address ?? "",
-          name: `${first_name ?? ""} ${last_name ?? ""}`.trim(),
+        update: {
+          email,
+          name,
+          role,
+        },
+        create: {
+          clerkId: id,
+          email,
+          name,
+          role,
+        },
+      });
+
+      await (
+        await clerkClient()
+      ).users.updateUserMetadata(id, {
+        publicMetadata: {
+          role,
         },
       });
     }
@@ -41,7 +80,7 @@ export async function POST(req: NextRequest) {
     if (eventType === "user.deleted") {
       const { id } = evt.data;
 
-      await prisma.user.delete({
+      await prisma.user.deleteMany({
         where: { clerkId: id },
       });
     }
