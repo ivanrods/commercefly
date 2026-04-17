@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher([
   "/cart(.*)",
@@ -8,20 +9,27 @@ const isProtectedRoute = createRouteMatcher([
   "/admin(.*)",
   "/api/cart(.*)",
 ]);
-
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
     await auth.protect();
   }
-  if (isAdminRoute(req)) {
-    const { sessionClaims } = await auth();
 
-    const role = (sessionClaims?.publicMetadata as any)?.role;
+  const session = await auth();
+  const userRole = (session.sessionClaims?.metadata as { role?: string })?.role;
 
-    if (role !== "ADMIN") {
-      return new Response("Sem permissão", { status: 403 });
-    }
+  if (isAdminRoute(req) && !(userRole === "ADMIN")) {
+    const url = new URL("/", req.url);
+    return NextResponse.redirect(url);
   }
 });
+
+export const config = {
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
+};
