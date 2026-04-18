@@ -71,25 +71,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-export async function GET() {
-  try {
-    const products = await prisma.product.findMany({
-      include: {
-        images: true,
-        category: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    return NextResponse.json(products);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Erro ao buscar produtos" },
-      { status: 500 },
-    );
-  }
-}

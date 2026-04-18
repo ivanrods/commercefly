@@ -4,9 +4,9 @@ import { requireAdmin } from "src/lib/auth";
 import z from "zod";
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const productSchema = z.object({
@@ -20,57 +20,6 @@ const productSchema = z.object({
   isFeatured: z.boolean().optional().default(false),
   categoryId: z.string().uuid("Categoria inválida"),
 });
-
-export async function GET(req: Request, { params }: Params) {
-  try {
-    const { id } = await params;
-
-    if (!id) {
-      return NextResponse.json({ error: "ID não informado" }, { status: 400 });
-    }
-
-    const product = await prisma.product.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        images: {
-          select: {
-            id: true,
-            url: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            slug: true,
-          },
-        },
-        likes: {
-          select: {
-            userId: true,
-          },
-        },
-        orderItems: true,
-      },
-    });
-
-    if (!product) {
-      return NextResponse.json(
-        { error: "Produto não encontrado" },
-        { status: 404 },
-      );
-    }
-
-    return NextResponse.json(product);
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Erro ao buscar produto";
-
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
-}
 
 export async function PUT(
   req: Request,

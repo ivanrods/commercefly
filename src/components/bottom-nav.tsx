@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ShoppingCart, ShoppingBasket } from "lucide-react";
+import { Home, ShoppingCart, ShoppingBasket, ShoppingBag } from "lucide-react";
 
 export function BottomNav() {
   const pathname = usePathname();
 
   const items = [
     { href: "/", icon: Home, label: "Home" },
-    { href: "/cart", icon: ShoppingCart, label: "Carrinho" },
+    { href: "/product", icon: ShoppingBag, label: "Produtos" },
     { href: "/orders", icon: ShoppingBasket, label: "Compras" },
+    { href: "/cart", icon: ShoppingCart, label: "Carrinho" },
   ];
 
   return (
