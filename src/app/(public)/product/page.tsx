@@ -13,6 +13,12 @@ import Link from "next/link";
 import { getProducts } from "src/services/product-service";
 import { ProductCard } from "../components/product-card";
 
+export const metadata = {
+  title: "Produtos | Commercefly",
+  description:
+    "Explore nossa seleção completa de produtos com alta qualidade e preços acessíveis na Commercefly.",
+};
+
 export default async function ProductPage({
   searchParams,
 }: {

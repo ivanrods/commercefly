@@ -32,7 +32,14 @@ import { checkout } from "src/services/checkout-service";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Skeleton } from "src/components/ui/skeleton";
-import Link from "next/link";
+
+/*
+export const metadata = {
+  title: "Carrinho de Compras | Commercefly",
+  description:
+    "Revise seus produtos, ajuste quantidades e finalize sua compra com segurança na Commercefly.",
+};
+*/
 
 export default function ShoppingCart1() {
   const router = useRouter();

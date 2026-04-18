@@ -9,6 +9,12 @@ import { CategoryCard } from "../components/categories-card";
 
 type IconName = keyof typeof LucideIcons;
 
+export const metadata = {
+  title: "Categorias | Commercefly",
+  description:
+    "Navegue pelas categorias da Commercefly e encontre produtos organizados para facilitar sua busca com qualidade e ótimos preços.",
+};
+
 export default async function HomePage() {
   const { categories } = await getCategories({
     page: 1,

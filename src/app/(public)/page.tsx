@@ -11,6 +11,12 @@ import { ArrowRight } from "lucide-react";
 
 type IconName = keyof typeof LucideIcons;
 
+export const metadata = {
+  title: "Commercefly | Encontre os Melhores Produtos",
+  description:
+    "Explore nossa loja online com uma grande variedade de produtos de alta qualidade e preços acessíveis.",
+};
+
 export default async function HomePage() {
   const { products } = await getProducts({
     page: 1,

@@ -25,6 +25,12 @@ import { formatCurrency } from "src/helpers/format-currency";
 import prisma from "src/lib/prisma";
 import { getOrders } from "src/services/orders-service";
 
+export const metadata = {
+  title: "Meus Pedidos | Commercefly",
+  description:
+    "Acompanhe seus pedidos, veja o status de entrega e histórico de compras na Commercefly.",
+};
+
 export default async function OrdersPage() {
   const { userId: clerkId } = await auth();
 

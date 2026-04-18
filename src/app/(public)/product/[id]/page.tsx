@@ -23,6 +23,14 @@ import { useAddCart } from "src/hooks/use-cart";
 import { Skeleton } from "src/components/ui/skeleton";
 import { useUser } from "@clerk/nextjs";
 
+/*
+export const metadata = {
+  title: "Detalhes do Produto | Commercefly",
+  description:
+    "Veja todas as informações, características e benefícios do produto selecionado na Commercefly.",
+};
+*/
+
 export default function ProductPage() {
   const params = useParams();
   const id = params.id as string;

@@ -10,6 +10,12 @@ type Props = {
   }>;
 };
 
+export const metadata = {
+  title: "Produtos por Categoria | Commercefly",
+  description:
+    "Explore produtos organizados por categoria na Commercefly e encontre exatamente o que você precisa com qualidade e ótimos preços.",
+};
+
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
 
