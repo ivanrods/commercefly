@@ -22,7 +22,7 @@ export default async function HomePage() {
   });
 
   return (
-    <section className="relative w-full py-4 md:py-16 lg:py-20">
+    <section className="relative w-full py-4">
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <header className="mx-auto mb-12 max-w-5xl">
           <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
