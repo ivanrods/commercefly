@@ -100,7 +100,7 @@ export default async function HomePage() {
                 </p>
               </div>
             </div>
-            <Link href="/product">
+            <Link href="/product?page=1">
               <Button className="cursor-pointer whitespace-nowrap" size="lg">
                 Ver todos os produtos
                 <ArrowRight className="ms-2" />
