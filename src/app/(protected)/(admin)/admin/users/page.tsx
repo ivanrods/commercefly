@@ -1,7 +1,7 @@
-import prisma from "src/lib/prisma";
+import prisma from "@/lib/prisma";
 import { UsersTable } from "./users-table";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default async function Page() {

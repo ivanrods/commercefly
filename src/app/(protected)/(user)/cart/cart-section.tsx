@@ -10,25 +10,20 @@ import {
   Store,
   MoveRight,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "src/components/ui/card";
-import { Button } from "src/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-import { Separator } from "src/components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import {
   useAddCart,
   useCart,
   useDecrementCart,
   useRemoveCart,
-} from "src/hooks/use-cart";
-import { Product } from "src/types/product-type";
-import { CartItem } from "src/types/cart-item-type";
-import { formatCurrency } from "src/helpers/format-currency";
-import { checkout } from "src/services/checkout-service";
+} from "@/hooks/use-cart";
+import { Product } from "@/types/product-type";
+import { CartItem } from "@/types/cart-item-type";
+import { formatCurrency } from "@/helpers/format-currency";
+import { checkout } from "@/services/checkout-service";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 

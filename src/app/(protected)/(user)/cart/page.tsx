@@ -1,4 +1,4 @@
-import prisma from "src/lib/prisma";
+import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import CartSection from "./cart-section";
 

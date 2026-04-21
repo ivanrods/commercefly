@@ -1,7 +1,7 @@
-import { getProducts } from "src/services/product-service";
+import { getProducts } from "@/services/product-service";
 import { ProductsTable } from "./products-table";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default async function Page() {

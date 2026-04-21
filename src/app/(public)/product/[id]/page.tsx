@@ -2,7 +2,7 @@ import { MoveRight, Store } from "lucide-react";
 import { getProductById } from "../../../../services/product-service";
 import ProductSection from "./product-section";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Detalhes do Produto | Commercefly",

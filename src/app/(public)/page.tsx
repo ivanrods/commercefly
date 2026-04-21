@@ -1,12 +1,12 @@
-import { getCategories } from "src/services/category-service";
-import { getProducts } from "src/services/product-service";
+import { getCategories } from "@/services/category-service";
+import { getProducts } from "@/services/product-service";
 import * as LucideIcons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import { CategoryCard } from "./components/categories-card";
 import { ProductCard } from "./components/product-card";
-import StorefrontHero from "src/app/(public)/components/storefront-hero";
+import StorefrontHero from "@/app/(public)/components/storefront-hero";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 type IconName = keyof typeof LucideIcons;

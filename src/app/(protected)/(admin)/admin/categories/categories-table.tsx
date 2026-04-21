@@ -3,14 +3,14 @@ import { MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "src/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -18,8 +18,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "src/components/ui/table";
-import { Category } from "src/types/category-type";
+} from "@/components/ui/table";
+import { Category } from "@/types/category-type";
 type CategoriesTableProps = {
   categories: Category[];
 };

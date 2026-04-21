@@ -1,7 +1,7 @@
-import { getCategories } from "src/services/category-service";
+import { getCategories } from "@/services/category-service";
 import { CategoriesTable } from "./categories-table";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default async function Page() {

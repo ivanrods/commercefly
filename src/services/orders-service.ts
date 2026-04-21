@@ -1,4 +1,4 @@
-import prisma from "src/lib/prisma";
+import prisma from "../lib/prisma";
 
 export async function getOrders(userId: string) {
   const orders = await prisma.order.findMany({

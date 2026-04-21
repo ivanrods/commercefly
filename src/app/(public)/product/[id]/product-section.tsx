@@ -4,8 +4,8 @@ import { MoveRight, Store } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Badge } from "src/components/ui/badge";
-import { Button } from "src/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
 import {
@@ -13,12 +13,12 @@ import {
   CarouselContent,
   CarouselItem,
   type CarouselApi,
-} from "src/components/ui/carousel";
+} from "@/components/ui/carousel";
 
-import { formatCurrency } from "src/helpers/format-currency";
-import { cn } from "src/lib/utils";
-import { Product } from "src/types/product-type";
-import { useAddCart } from "src/hooks/use-cart";
+import { formatCurrency } from "@/helpers/format-currency";
+import { cn } from "@/lib/utils";
+import { Product } from "@/types/product-type";
+import { useAddCart } from "@/hooks/use-cart";
 import { useUser } from "@clerk/nextjs";
 
 interface Props {

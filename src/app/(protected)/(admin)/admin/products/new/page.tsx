@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Input } from "src/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldDescription,
@@ -14,10 +14,10 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "src/components/ui/field";
-import { Button } from "src/components/ui/button";
-import { Textarea } from "src/components/ui/textarea";
-import { Checkbox } from "src/components/ui/checkbox";
+} from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Combobox,
   ComboboxContent,
@@ -25,8 +25,8 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "src/components/ui/combobox";
-import { Category } from "src/types/category-type";
+} from "@/components/ui/combobox";
+import { Category } from "@/types/category-type";
 import { toast } from "sonner";
 
 const productSchema = z.object({

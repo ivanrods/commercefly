@@ -1,9 +1,8 @@
-import { getCategories } from "src/services/category-service";
-
+import { getCategories } from "@/services/category-service";
 import * as LucideIcons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { CategoryCard } from "../components/categories-card";
 

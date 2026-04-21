@@ -1,5 +1,5 @@
-import { BottomNav } from "src/components/bottom-nav";
-import { SiteHeader } from "src/components/site-header";
+import { BottomNav } from "@/components/bottom-nav";
+import { SiteHeader } from "@/components/site-header";
 
 export default function UserLayout({
   children,

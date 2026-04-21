@@ -1,4 +1,4 @@
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import {
   Pagination,
@@ -7,10 +7,10 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "src/components/ui/pagination";
+} from "@/components/ui/pagination";
 
 import Link from "next/link";
-import { getProducts } from "src/services/product-service";
+import { getProducts } from "@/services/product-service";
 import { ProductCard } from "../components/product-card";
 
 export const metadata = {

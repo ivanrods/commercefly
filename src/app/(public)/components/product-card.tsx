@@ -2,13 +2,13 @@
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
-import { Card, CardContent, CardFooter } from "src/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
-import { formatCurrency } from "src/helpers/format-currency";
-import { useAddCart } from "src/hooks/use-cart";
+import { formatCurrency } from "@/helpers/format-currency";
+import { useAddCart } from "@/hooks/use-cart";
 
-import { Product } from "src/types/product-type";
+import { Product } from "@/types/product-type";
 
 type ProductCardProps = {
   product: Product;

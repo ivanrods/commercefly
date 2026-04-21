@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "../../../components/ui/button";
-import { Badge } from "../../../components/ui/badge";
-import { Input } from "../../../components/ui/input";
-import { Card, CardContent } from "../../../components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Search,
   ArrowRight,
@@ -16,7 +16,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "../../../components/ui/carousel";
+} from "@/components/ui/carousel";
 import Image from "next/image";
 
 interface Product {

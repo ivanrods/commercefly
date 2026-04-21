@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { Input } from "src/components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldDescription,
@@ -14,8 +14,8 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "src/components/ui/field";
-import { Button } from "src/components/ui/button";
+} from "@/components/ui/field";
+import { Button } from "@/components/ui/button";
 
 const categorySchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),

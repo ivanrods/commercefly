@@ -4,7 +4,7 @@ import {
   decrementCartItem,
   getCart,
   removeFromCart,
-} from "src/services/cart-service";
+} from "../services/cart-service";
 import { toast } from "sonner";
 
 export function useCart() {

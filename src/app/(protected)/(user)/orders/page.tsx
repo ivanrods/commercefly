@@ -3,15 +3,15 @@ import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Badge } from "src/components/ui/badge";
-import { Button } from "src/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "src/components/ui/card";
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -20,10 +20,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "src/components/ui/table";
-import { formatCurrency } from "src/helpers/format-currency";
-import prisma from "src/lib/prisma";
-import { getOrders } from "src/services/orders-service";
+} from "@/components/ui/table";
+import { formatCurrency } from "@/helpers/format-currency";
+import prisma from "@/lib/prisma";
+import { getOrders } from "@/services/orders-service";
 
 export const metadata = {
   title: "Meus Pedidos | Commercefly",

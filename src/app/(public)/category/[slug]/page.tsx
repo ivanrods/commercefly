@@ -1,6 +1,6 @@
-import { getCategoryBySlug } from "src/services/category-service";
+import { getCategoryBySlug } from "@/services/category-service";
 import { ProductCard } from "../../components/product-card";
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 

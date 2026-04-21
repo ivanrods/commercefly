@@ -1,12 +1,12 @@
 import { MoreHorizontalIcon } from "lucide-react";
 
-import { Button } from "src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "src/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -14,8 +14,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "src/components/ui/table";
-import { User } from "src/types/user-type";
+} from "@/components/ui/table";
+import { User } from "@/types/user-type";
 
 type UsersTableProps = {
   users: User[];

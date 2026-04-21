@@ -1,6 +1,6 @@
-import { BottomNav } from "src/components/bottom-nav";
-import { Footer } from "src/components/footer";
-import { SiteHeader } from "src/components/site-header";
+import { BottomNav } from "@/components/bottom-nav";
+import { Footer } from "@/components/footer";
+import { SiteHeader } from "@/components/site-header";
 
 export default function PublicLayout({
   children,
