@@ -154,7 +154,7 @@ async function main() {
       price: 519,
       stock: 8,
       categorySlug: "joias",
-      images: [" https://i.ibb.co/jZbhN68R/anel.webp"],
+      images: ["https://i.ibb.co/jZbhN68R/anel.webp"],
     },
   ];
 

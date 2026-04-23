@@ -117,7 +117,7 @@ export default function StorefrontHero() {
               {storeData.title}
             </h1>
 
-            <p className="text-muted-foreground max-w-lg text-xl text-balance">
+            <p className="text-muted-foreground max-w-lg text-lg md:text-xl text-balance">
               {storeData.subtitle}
             </p>
 
@@ -127,7 +127,7 @@ export default function StorefrontHero() {
                 placeholder="Pesquisar produtos..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-14 rounded-full pe-4 pl-12 text-lg"
+                className="h-14 rounded-full pe-4 pl-12 text-md md:text-lg"
                 aria-label="Search products"
               />
               <Search className="text-muted-foreground absolute inset-s-4 top-1/2 size-5 -translate-y-1/2" />

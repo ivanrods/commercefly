@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 export function Footer() {
   return (
     <footer className="w-full border-t  px-6 py-20 md:py-16 ">
-      <div className="mx-auto grid grid-cols-1 max-w-7xl gap-12 lg:grid-cols-2 ">
+      <div className="mx-auto grid grid-cols-1 max-w-screen-2xl gap-12 lg:grid-cols-2 ">
         <div className="space-y-4 ">
           <div className="flex items-center gap-2 font-semibold text-lg">
             <ShoppingBag className="h-5 w-5" />

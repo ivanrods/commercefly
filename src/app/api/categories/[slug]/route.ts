@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+
 interface Params {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function GET(req: Request, { params }: Params) {
