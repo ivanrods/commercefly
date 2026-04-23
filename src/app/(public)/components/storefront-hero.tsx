@@ -199,7 +199,7 @@ export default function StorefrontHero() {
                               <h2 className="text-4xl font-bold">
                                 {product.name}
                               </h2>
-                              <p className="text-background-foreground/80 text-lg">
+                              <p className="text-background-foreground/80 md:text-lg">
                                 Descubra o que há de mais moderno em estilo e
                                 conforto com nossa coleção.
                               </p>

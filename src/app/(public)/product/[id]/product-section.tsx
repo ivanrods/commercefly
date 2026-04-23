@@ -70,7 +70,7 @@ export default function ProductSection({ product }: Props) {
   }, [carouselApi, selectedImage]);
 
   return (
-    <section className="@container mx-auto max-w-7xl   min-h-screen flex justify-center items-center">
+    <section className="@container mx-auto max-w-7xl min-h-[calc(100vh-120px)] flex justify-center items-center">
       <div className="grid grid-cols-1 gap-6 p-4 lg:grid-cols-2 lg:gap-8 lg:p-6 xl:grid-cols-3 xl:gap-12 xl:p-12">
         <div className="flex flex-col justify-between gap-6 lg:gap-8">
           <div className="space-y-2 lg:space-y-4">
