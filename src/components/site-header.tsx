@@ -47,14 +47,14 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Separator
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
           />
 
           <SignedOut>
-            <Button asChild>
+            <Button asChild size="sm">
               <SignInButton />
             </Button>
 

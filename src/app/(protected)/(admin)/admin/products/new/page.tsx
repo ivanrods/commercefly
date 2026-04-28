@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { productFormSchema } from "@/validators/product-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/components/ui/input";
@@ -29,17 +30,9 @@ import {
 import { Category } from "@/types/category-type";
 import { toast } from "sonner";
 
-const productSchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-  description: z.string().min(1, "Descrição é obrigatória"),
-  price: z.number().min(1, "Preço inválido"),
-  images: z.array(z.string().url("URL inválida")).min(1, "Adicione uma imagem"),
-  stock: z.number().min(0),
-  categoryId: z.string().min(1, "Selecione uma categoria"),
-  isFeatured: z.boolean(),
-});
+// Schema centralizado em src/validators/product-schema.ts
 
-type FormData = z.infer<typeof productSchema>;
+type FormData = z.infer<typeof productFormSchema>;
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -51,7 +44,7 @@ export default function NewProductPage() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productFormSchema),
     defaultValues: {
       name: "",
       description: "",
