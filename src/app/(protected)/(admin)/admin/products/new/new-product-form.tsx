@@ -1,6 +1,5 @@
 "use client";
-
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { productFormSchema } from "@/validators/product-schema";
@@ -28,19 +27,15 @@ import {
 } from "@/components/ui/combobox";
 import { Category } from "@/types/category-type";
 import { toast } from "sonner";
-import { Product } from "@/types/product-type";
-
-interface Props {
-  product: Product;
-  categories: Category[];
-}
 
 type FormData = z.infer<typeof productFormSchema>;
 
-export default function ProductForm({ product, categories }: Props) {
+export default function NewProductForm({
+  categories,
+}: {
+  categories: Category[];
+}) {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
 
   const {
     register,
@@ -50,80 +45,90 @@ export default function ProductForm({ product, categories }: Props) {
   } = useForm<FormData>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      images: product.images.map((img) => img.url),
-      stock: product.stock,
-      categoryId: product.categoryId,
-      isFeatured: product.isFeatured,
+      name: "",
+      description: "",
+      price: 0,
+      images: [""],
+      stock: 0,
+      categoryId: "",
+      isFeatured: false,
     },
   });
 
   const onSubmit = async (data: FormData) => {
     try {
-      await fetch(`/api/products/${id}`, {
-        method: "PUT",
+      await fetch("/api/products", {
+        method: "POST",
         credentials: "include",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          price: data.price,
+        }),
       });
 
-      toast.success("Produto atualizado com sucesso!", {
+      toast.success("Produto criado com sucesso!", {
         position: "top-center",
       });
       router.push("/admin/products");
     } catch (err) {
       console.error(err);
-      toast.error("Erro ao atualizar produto", {
+      toast.error("Erro ao criar produto", {
         position: "top-center",
       });
     }
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4">
+    <div className="max-w-xl mx-auto p-4 ">
       <FieldSet>
-        <FieldLegend>Editar Produto</FieldLegend>
-        <FieldDescription>Atualize os dados do produto</FieldDescription>
+        <FieldLegend>Novo Produto</FieldLegend>
+        <FieldDescription>Pagina para adicionar produtos</FieldDescription>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Field>
               <FieldLabel>Nome do produto</FieldLabel>
-              <Input {...register("name")} />
+              <Input {...register("name")} placeholder="Nome" />
               <p className="text-red-500 text-sm">{errors.name?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Descrição</FieldLabel>
-              <Textarea {...register("description")} />
+              <FieldLabel>Descrição do produto</FieldLabel>
+              <Textarea {...register("description")} placeholder="Descrição" />
               <p className="text-red-500 text-sm">
                 {errors.description?.message}
               </p>
             </Field>
 
             <Field>
-              <FieldLabel>Preço</FieldLabel>
-              <Input {...register("price", { valueAsNumber: true })} />
+              <FieldLabel>Preço do produto</FieldLabel>
+              <Input
+                {...register("price", { valueAsNumber: true })}
+                placeholder="ex: 50 ou 50,99"
+              />
               <p className="text-red-500 text-sm">{errors.price?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Imagem</FieldLabel>
-              <Input onChange={(e) => setValue("images", [e.target.value])} />
+              <FieldLabel>Link da Imagem</FieldLabel>
+              <Input
+                placeholder="https://..."
+                onChange={(e) => setValue("images", [e.target.value])}
+              />
               <p className="text-red-500 text-sm">{errors.images?.message}</p>
             </Field>
 
             <Field>
-              <FieldLabel>Estoque</FieldLabel>
+              <FieldLabel>Quantidade disponível</FieldLabel>
               <Input
                 type="number"
                 {...register("stock", { valueAsNumber: true })}
+                placeholder="Estoque"
               />
             </Field>
 
             <Field>
-              <FieldLabel>Categoria</FieldLabel>
+              <FieldLabel>Categoria do produto</FieldLabel>
 
               <Combobox
                 items={categories}
@@ -134,7 +139,7 @@ export default function ProductForm({ product, categories }: Props) {
                 <ComboboxInput placeholder="Selecione uma categoria" />
 
                 <ComboboxContent>
-                  <ComboboxEmpty>Nenhuma categoria encontrada</ComboboxEmpty>
+                  <ComboboxEmpty>Nenhuma categoria encontrada.</ComboboxEmpty>
 
                   <ComboboxList>
                     {(item) => (
@@ -158,9 +163,11 @@ export default function ProductForm({ product, categories }: Props) {
               <FieldLabel>Produto em destaque?</FieldLabel>
             </Field>
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Atualizando..." : "Atualizar produto"}
-            </Button>
+            <Field orientation="horizontal">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Criando..." : "Criar produto"}
+              </Button>
+            </Field>
           </FieldGroup>
         </form>
       </FieldSet>

@@ -1,7 +1,7 @@
 import { getProductById } from "@/services/product-service";
 import { Button } from "@base-ui/react";
 import { Link, MoveRight, Store } from "lucide-react";
-import ProductForm from "./poduct-from";
+import UpdateProductForm from "./update-product-form";
 import { getCategories } from "@/services/category-service";
 
 type Props = {
@@ -43,5 +43,5 @@ export default async function EditProductPage({ params }: Props) {
     );
   }
 
-  return <ProductForm product={product} categories={categories} />;
+  return <UpdateProductForm product={product} categories={categories} />;
 }
