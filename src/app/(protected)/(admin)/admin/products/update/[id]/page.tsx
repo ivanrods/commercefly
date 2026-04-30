@@ -1,281 +1,47 @@
-"use client";
+import { getProductById } from "@/services/product-service";
+import { Button } from "@base-ui/react";
+import { Link, MoveRight, Store } from "lucide-react";
+import ProductForm from "./poduct-from";
+import { getCategories } from "@/services/category-service";
 
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { productFormSchema } from "@/validators/product-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { Input } from "@/components/ui/input";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from "@/components/ui/combobox";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Category } from "@/types/category-type";
-import { toast } from "sonner";
-
-// Schema centralizado em src/validators/product-schema.ts
-
-type FormData = z.infer<typeof productFormSchema>;
-
-type ProductImage = {
-  id: string;
-  url: string;
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
 };
+export default async function EditProductPage({ params }: Props) {
+  const { id } = await params;
 
-export default function EditProductPage() {
-  const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
-
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
-      images: [""],
-      stock: 0,
-      categoryId: "",
-      isFeatured: false,
-    },
+  const product = await getProductById(id);
+  const { categories } = await getCategories({
+    page: 1,
+    limit: 20,
   });
 
-  useEffect(() => {
-    async function loadCategories() {
-      const res = await fetch("/api/categories");
-      const data = await res.json();
-      setCategories(data);
-    }
-
-    loadCategories();
-  }, []);
-
-  useEffect(() => {
-    async function loadProduct() {
-      try {
-        const res = await fetch(`/api/products/${id}`);
-        const product = await res.json();
-
-        setValue("name", product.name);
-        setValue("description", product.description);
-        setValue("price", product.price);
-        setValue(
-          "images",
-          product.images.map((img: ProductImage) => img.url),
-        );
-        setValue("stock", product.stock);
-        setValue("categoryId", product.categoryId);
-        setValue("isFeatured", product.isFeatured);
-      } catch (err) {
-        console.error(err);
-        toast.error("Erro ao carregar produto", {
-          position: "top-center",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (id) loadProduct();
-  }, [id, setValue]);
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      await fetch(`/api/products/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        body: JSON.stringify(data),
-      });
-
-      toast.success("Produto atualizado com sucesso!", {
-        position: "top-center",
-      });
-      router.push("/admin/products");
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao atualizar produto", {
-        position: "top-center",
-      });
-    }
-  };
-
-  if (loading)
+  if (!product) {
     return (
-      <div className="max-w-xl mx-auto px-4 animate-pulse">
-        <FieldSet>
-          <FieldLegend>
-            <Skeleton className="h-6 w-48 rounded-md" />
-          </FieldLegend>
-          <FieldDescription>
-            <Skeleton className="h-4 w-64 rounded-md" />
-          </FieldDescription>
+      <div className="flex min-h-[60vh] items-center justify-center px-4 ">
+        <div className="flex max-w-md flex-col items-center gap-4 text-center">
+          <div className="bg-muted flex size-16 items-center justify-center rounded-full">
+            <Store className="size-8 text-muted-foreground" />
+          </div>
 
-          <FieldGroup className="mt-4 space-y-4">
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-32 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-10 w-full rounded-md" />
-            </Field>
+          <h2 className="text-2xl font-bold">Produto não encontrado</h2>
 
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-32 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-24 w-full rounded-md" />
-            </Field>
+          <p className="text-muted-foreground">
+            O produto que você está procurando não existe ou foi removido.
+          </p>
 
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-24 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-10 w-1/2 rounded-md" />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-24 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-10 w-full rounded-md" />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-24 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-10 w-1/4 rounded-md" />
-            </Field>
-
-            <Field>
-              <FieldLabel>
-                <Skeleton className="h-4 w-32 rounded-md" />
-              </FieldLabel>
-              <Skeleton className="h-10 w-full rounded-md" />
-            </Field>
-
-            <Field orientation="horizontal" className="items-center space-x-2">
-              <Skeleton className="h-6 w-6 rounded-full" />
-              <Skeleton className="h-4 w-32 rounded-md" />
-            </Field>
-
-            <Button disabled className="w-full">
-              <Skeleton className="h-10 w-full rounded-md" />
+          <Link href="/admin/products">
+            <Button className="mt-2">
+              Voltar para a loja
+              <MoveRight className="ml-2 size-4" />
             </Button>
-          </FieldGroup>
-        </FieldSet>
+          </Link>
+        </div>
       </div>
     );
+  }
 
-  return (
-    <div className="max-w-xl mx-auto p-4">
-      <FieldSet>
-        <FieldLegend>Editar Produto</FieldLegend>
-        <FieldDescription>Atualize os dados do produto</FieldDescription>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Field>
-              <FieldLabel>Nome do produto</FieldLabel>
-              <Input {...register("name")} />
-              <p className="text-red-500 text-sm">{errors.name?.message}</p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Descrição</FieldLabel>
-              <Textarea {...register("description")} />
-              <p className="text-red-500 text-sm">
-                {errors.description?.message}
-              </p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Preço</FieldLabel>
-              <Input {...register("price", { valueAsNumber: true })} />
-              <p className="text-red-500 text-sm">{errors.price?.message}</p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Imagem</FieldLabel>
-              <Input onChange={(e) => setValue("images", [e.target.value])} />
-              <p className="text-red-500 text-sm">{errors.images?.message}</p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Estoque</FieldLabel>
-              <Input
-                type="number"
-                {...register("stock", { valueAsNumber: true })}
-              />
-            </Field>
-
-            <Field>
-              <FieldLabel>Categoria</FieldLabel>
-
-              <Combobox
-                items={categories}
-                onValueChange={(value) =>
-                  setValue("categoryId", value as string)
-                }
-              >
-                <ComboboxInput placeholder="Selecione uma categoria" />
-
-                <ComboboxContent>
-                  <ComboboxEmpty>Nenhuma categoria encontrada</ComboboxEmpty>
-
-                  <ComboboxList>
-                    {(item) => (
-                      <ComboboxItem key={item.id} value={item.id}>
-                        {item.name}
-                      </ComboboxItem>
-                    )}
-                  </ComboboxList>
-                </ComboboxContent>
-              </Combobox>
-
-              <p className="text-red-500 text-sm">
-                {errors.categoryId?.message}
-              </p>
-            </Field>
-
-            <Field orientation="horizontal">
-              <Checkbox
-                onCheckedChange={(checked) => setValue("isFeatured", !!checked)}
-              />
-              <FieldLabel>Produto em destaque?</FieldLabel>
-            </Field>
-
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Atualizando..." : "Atualizar produto"}
-            </Button>
-          </FieldGroup>
-        </form>
-      </FieldSet>
-    </div>
-  );
+  return <ProductForm product={product} categories={categories} />;
 }
