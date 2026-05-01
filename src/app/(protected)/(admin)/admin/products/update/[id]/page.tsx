@@ -43,5 +43,7 @@ export default async function EditProductPage({ params }: Props) {
     );
   }
 
-  return <UpdateProductForm product={product} categories={categories} />;
+  return (
+    <UpdateProductForm id={id} product={product} categories={categories} />
+  );
 }

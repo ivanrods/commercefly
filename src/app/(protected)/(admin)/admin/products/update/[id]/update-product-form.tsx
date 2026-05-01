@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { productFormSchema } from "@/validators/product-schema";
@@ -31,16 +31,15 @@ import { toast } from "sonner";
 import { Product } from "@/types/product-type";
 
 interface Props {
+  id: string;
   product: Product;
   categories: Category[];
 }
 
 type FormData = z.infer<typeof productFormSchema>;
 
-export default function UpdateProductForm({ product, categories }: Props) {
+export default function UpdateProductForm({ id, product, categories }: Props) {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id as string;
 
   const {
     register,
