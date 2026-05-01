@@ -1,122 +1,41 @@
-"use client";
+import { Button } from "@base-ui/react";
+import { Link, MoveRight, Store } from "lucide-react";
 
-import { useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { categorySchema } from "@/validators/category-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { Input } from "@/components/ui/input";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field";
-import { Button } from "@/components/ui/button";
+import UpdateCategoryForm from "./update-categories-form";
+import { getCategoryBySlug } from "@/services/category-service";
 
-type FormData = z.infer<typeof categorySchema>;
+type Props = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+export default async function EditCategoryPage({ params }: Props) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
 
-export default function UpdateCategoryPage() {
-  const router = useRouter();
-  const params = useParams();
+  if (!category) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center px-4 ">
+        <div className="flex max-w-md flex-col items-center gap-4 text-center">
+          <div className="bg-muted flex size-16 items-center justify-center rounded-full">
+            <Store className="size-8 text-muted-foreground" />
+          </div>
 
-  const currentSlug = params.slug as string;
+          <h2 className="text-2xl font-bold">Categoria não encontrada</h2>
+          <p className="text-muted-foreground">
+            A categoria que você está procurando não existe ou foi removida.
+          </p>
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(categorySchema),
-  });
+          <Link href="/admin/categories">
+            <Button className="mt-2">
+              Voltar para a loja
+              <MoveRight className="ml-2 size-4" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const res = await fetch(`/api/categories/${currentSlug}`);
-        const data = await res.json();
-
-        setValue("name", data.name);
-        setValue("slug", data.slug);
-        setValue("imageUrl", data.imageUrl || "");
-      } catch (err) {
-        console.error(err);
-        toast.error("Erro ao carregar categoria", {
-          position: "top-center",
-        });
-      }
-    };
-
-    if (currentSlug) {
-      fetchCategory();
-    }
-  }, [currentSlug, setValue]);
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      await fetch(`/api/categories/${currentSlug}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          newSlug: data.slug,
-          imageUrl: data.imageUrl || null,
-        }),
-      });
-
-      toast.success("Categoria atualizada com sucesso!", {
-        position: "top-center",
-      });
-      router.push("/admin/categories");
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao atualizar categoria", {
-        position: "top-center",
-      });
-    }
-  };
-
-  return (
-    <div className="max-w-xl mx-auto p-4">
-      <FieldSet>
-        <FieldLegend>Editar Categoria</FieldLegend>
-        <FieldDescription>Atualize os dados da categoria</FieldDescription>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Field>
-              <FieldLabel>Nome da categoria</FieldLabel>
-              <Input {...register("name")} />
-              <p className="text-red-500 text-sm">{errors.name?.message}</p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Slug</FieldLabel>
-              <Input {...register("slug")} />
-              <p className="text-red-500 text-sm">{errors.slug?.message}</p>
-            </Field>
-
-            <Field>
-              <FieldLabel>Imagem (opcional)</FieldLabel>
-              <Input {...register("imageUrl")} />
-              <p className="text-red-500 text-sm">{errors.imageUrl?.message}</p>
-            </Field>
-
-            <Field orientation="horizontal">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Salvando..." : "Salvar alterações"}
-              </Button>
-            </Field>
-          </FieldGroup>
-        </form>
-      </FieldSet>
-    </div>
-  );
+  return <UpdateCategoryForm slug={slug} categories={[category]} />;
 }
