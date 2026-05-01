@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { categorySchema } from "@/validators/category-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
@@ -16,12 +17,6 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-
-const categorySchema = z.object({
-  name: z.string().min(1, "Nome é obrigatório"),
-  slug: z.string().min(1, "Slug é obrigatório"),
-  imageUrl: z.string().optional().or(z.literal("")),
-});
 
 type FormData = z.infer<typeof categorySchema>;
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { categorySchema } from "@/validators/category-schema";
 
 export async function GET() {
   try {
@@ -29,15 +30,14 @@ export async function POST(request: Request) {
     await requireAdmin();
 
     const body = await request.json();
-
-    const { name, slug, imageUrl } = body;
-
-    if (!name || !slug) {
+    const parse = categorySchema.safeParse(body);
+    if (!parse.success) {
       return NextResponse.json(
-        { error: "Name and slug are required" },
+        { error: parse.error.issues.map((e) => e.message).join(", ") },
         { status: 400 },
       );
     }
+    const { name, slug, imageUrl } = parse.data;
 
     const categoryExists = await prisma.category.findUnique({
       where: { slug },

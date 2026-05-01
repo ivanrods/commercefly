@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { categorySchema } from "@/validators/category-schema";
 
 interface Params {
   params: Promise<{
@@ -58,19 +59,22 @@ export async function PATCH(req: Request, { params }: Params) {
     const { slug } = await params;
 
     const body = await req.json();
-
-    const { name, newSlug, imageUrl } = body;
+    // Validação com categorySchema, mas aceita newSlug ao invés de slug
+    const parse = categorySchema.safeParse({
+      ...body,
+      slug: body.newSlug ?? body.slug,
+    });
+    if (!parse.success) {
+      return NextResponse.json(
+        { error: parse.error.issues.map((e) => e.message).join(", ") },
+        { status: 400 },
+      );
+    }
+    const { name, slug: newSlug, imageUrl } = parse.data;
 
     if (!slug) {
       return NextResponse.json(
         { error: "Categoria não encontrada" },
-        { status: 400 },
-      );
-    }
-
-    if (!name || !newSlug) {
-      return NextResponse.json(
-        { error: "Name e slug são obrigatórios" },
         { status: 400 },
       );
     }
