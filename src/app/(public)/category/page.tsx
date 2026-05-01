@@ -15,10 +15,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const { categories } = await getCategories({
-    page: 1,
-    limit: 20,
-  });
+  const { categories } = await getCategories({ limit: 0 });
 
   return (
     <section className="relative w-full py-4">

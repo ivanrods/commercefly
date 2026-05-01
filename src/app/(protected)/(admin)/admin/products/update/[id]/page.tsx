@@ -13,10 +13,7 @@ export default async function EditProductPage({ params }: Props) {
   const { id } = await params;
 
   const product = await getProductById(id);
-  const { categories } = await getCategories({
-    page: 1,
-    limit: 20,
-  });
+  const { categories } = await getCategories({ limit: 0 });
 
   if (!product) {
     return (

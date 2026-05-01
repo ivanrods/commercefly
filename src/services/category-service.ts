@@ -9,12 +9,16 @@ export async function getCategories({
   page = 1,
   limit = 8,
 }: GetCategoriesParams) {
-  const skip = (page - 1) * limit;
+  const isAll = !limit || limit === 0;
 
   const [categories, total] = await Promise.all([
     prisma.category.findMany({
-      skip,
-      take: limit,
+      ...(isAll
+        ? {}
+        : {
+            skip: (page - 1) * limit,
+            take: limit,
+          }),
       orderBy: {
         name: "desc",
       },
@@ -25,15 +29,14 @@ export async function getCategories({
         imageUrl: true,
       },
     }),
-
     prisma.category.count(),
   ]);
 
   return {
     categories,
     total,
-    page,
-    totalPages: Math.ceil(total / limit),
+    page: isAll ? 1 : page,
+    totalPages: isAll ? 1 : Math.ceil(total / limit),
   };
 }
 

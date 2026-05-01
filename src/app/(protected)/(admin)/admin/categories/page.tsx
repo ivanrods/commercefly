@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default async function Page() {
-  const { categories } = await getCategories({
-    page: 1,
-    limit: 30,
-  });
+  const { categories } = await getCategories({ limit: 0 });
   return (
     <div className="w-full p-4 space-y-4">
       <header className="mx-auto ">
