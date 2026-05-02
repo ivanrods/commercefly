@@ -9,7 +9,7 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full">
+      <main className="w-full h-screen overflow-auto">
         <SidebarTrigger />
         {children}
       </main>

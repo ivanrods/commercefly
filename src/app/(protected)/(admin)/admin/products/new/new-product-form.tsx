@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ImageUploadField } from "@/components/image-upload-field";
 import {
   Combobox,
   ComboboxContent,
@@ -41,6 +42,7 @@ export default function NewProductForm({
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(productFormSchema),
@@ -48,20 +50,35 @@ export default function NewProductForm({
       name: "",
       description: "",
       price: 0,
-      images: [""],
+      images: [],
       stock: 0,
       categoryId: "",
       isFeatured: false,
     },
   });
 
+  // Watch images para atualizar em tempo real
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const images = watch("images");
+
   const onSubmit = async (data: FormData) => {
     try {
+      // Filtrar URLs vazias
+      const validImages = data.images.filter((url) => url.trim().length > 0);
+
+      if (validImages.length === 0) {
+        toast.error("Adicione pelo menos uma imagem", {
+          position: "top-center",
+        });
+        return;
+      }
+
       await fetch("/api/products", {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({
           ...data,
+          images: validImages,
           price: data.price,
         }),
       });
@@ -109,14 +126,13 @@ export default function NewProductForm({
               <p className="text-red-500 text-sm">{errors.price?.message}</p>
             </Field>
 
-            <Field>
-              <FieldLabel>Link da Imagem</FieldLabel>
-              <Input
-                placeholder="https://..."
-                onChange={(e) => setValue("images", [e.target.value])}
-              />
-              <p className="text-red-500 text-sm">{errors.images?.message}</p>
-            </Field>
+            <ImageUploadField
+              value={images || []}
+              onChange={(images) => setValue("images", images)}
+              error={errors.images?.message}
+              label="Imagens do Produto"
+              maxImages={5}
+            />
 
             <Field>
               <FieldLabel>Quantidade disponível</FieldLabel>
