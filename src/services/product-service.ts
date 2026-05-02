@@ -13,7 +13,7 @@ export async function getProducts({
   category,
   featured,
 }: GetProductsParams) {
-  const skip = (page - 1) * limit;
+  const isAll = !limit || limit === 0;
 
   const where: Record<string, unknown> = {};
 
@@ -30,8 +30,12 @@ export async function getProducts({
   const [products, total] = await Promise.all([
     prisma.product.findMany({
       where,
-      skip,
-      take: limit,
+      ...(isAll
+        ? {}
+        : {
+            skip: (page - 1) * limit,
+            take: limit,
+          }),
       orderBy: {
         createdAt: "desc",
       },
@@ -47,8 +51,8 @@ export async function getProducts({
   return {
     products,
     total,
-    page,
-    totalPages: Math.ceil(total / limit),
+    page: isAll ? 1 : page,
+    totalPages: isAll ? 1 : Math.ceil(total / limit),
   };
 }
 
