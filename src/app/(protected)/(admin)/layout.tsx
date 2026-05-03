@@ -1,5 +1,6 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./admin/components/app-sidebar";
+import { AppHeader } from "./admin/components/app-header";
 
 export default function AdminLayout({
   children,
@@ -10,7 +11,7 @@ export default function AdminLayout({
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full h-screen overflow-auto">
-        <SidebarTrigger />
+        <AppHeader />
         {children}
       </main>
     </SidebarProvider>
