@@ -6,7 +6,7 @@ Aplicação completa de e-commerce desenvolvida com foco em arquitetura moderna,
 
 ## Demonstração
 
-> Em breve (adicione aqui o link da sua aplicação em produção)
+<img width="1906" height="1000" alt="Balancefy" src="https://i.ibb.co/F4SSKq4s/commercefly-cover.jpg0" />
 
 ---
 
@@ -49,6 +49,10 @@ Foi desenvolvido com foco em:
 ### Pagamentos
 
 - Stripe
+
+### Armazenamento de Imagens
+
+- Cloudinary
 
 ---
 
@@ -98,6 +102,14 @@ Foi desenvolvido com foco em:
 - CRUD de produtos
 - CRUD de categorias
 - Controle de acesso por role (ADMIN)
+
+### Upload de Imagens
+
+- Upload de imagens de produtos com Cloudinary
+- Otimização automática de imagens
+- Armazenamento seguro na nuvem
+- Suporte a múltiplos formatos
+- Crop e redimensionamento de imagens
 
 ---
 
@@ -168,6 +180,10 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=
 STRIPE_SECRET_KEY=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 ### 3. Rodar migrations
