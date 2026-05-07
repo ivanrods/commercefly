@@ -18,6 +18,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: number;
@@ -84,6 +85,7 @@ const storeData = {
 
 export default function StorefrontHero() {
   const [searchQuery, setSearchQuery] = useState("");
+  const route = useRouter();
   const [api, setApi] = useState<{
     selectedScrollSnap: () => number;
     scrollTo: (index: number) => void;
@@ -132,6 +134,7 @@ export default function StorefrontHero() {
               />
               <Search className="text-muted-foreground absolute inset-s-4 top-1/2 size-5 -translate-y-1/2" />
               <Button
+                onClick={() => route.push(`/search?q=${searchQuery}`)}
                 size="lg"
                 className="absolute inset-e-2 top-1/2 -translate-y-1/2 cursor-pointer rounded-full px-6"
               >
@@ -143,6 +146,7 @@ export default function StorefrontHero() {
               <Button
                 size="lg"
                 className="cursor-pointer gap-2 rounded-full px-8"
+                onClick={() => route.push("/product")}
               >
                 Compre agora
                 <ArrowRight className="size-4" />
@@ -151,6 +155,7 @@ export default function StorefrontHero() {
                 size="lg"
                 variant="outline"
                 className="cursor-pointer gap-2 rounded-full px-8"
+                onClick={() => route.push("/search")}
               >
                 <ShoppingBag className="size-4" />
                 Ver catálogo
@@ -207,6 +212,9 @@ export default function StorefrontHero() {
                                 <Button
                                   size="lg"
                                   className="cursor-pointer rounded-full"
+                                  onClick={() =>
+                                    route.push(`/product/${product.id}`)
+                                  }
                                 >
                                   Compre agora
                                 </Button>

@@ -27,13 +27,17 @@ export function Footer() {
             <h3 className="mb-3 font-medium">Início</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="#">Sobre</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">Sobre</a>
               </li>
               <li>
-                <a href="#">Coleção</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">
+                  Coleção
+                </a>
               </li>
               <li>
-                <a href="#">Blog e Notícias</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">
+                  Blog e Notícias
+                </a>
               </li>
             </ul>
           </div>
@@ -42,13 +46,19 @@ export function Footer() {
             <h3 className="mb-3 font-medium">Segurança</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>
-                <a href="#">Política de Privacidade</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">
+                  Política de Privacidade
+                </a>
               </li>
               <li>
-                <a href="#">Acordos de Usuário</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">
+                  Acordos de Usuário
+                </a>
               </li>
               <li>
-                <a href="#">Copyright</a>
+                <a href="https://portfolio-ivan-rodrigues.vercel.app/">
+                  Copyright
+                </a>
               </li>
             </ul>
           </div>
