@@ -97,3 +97,55 @@ export async function getProductsByCategory(slug: string) {
     },
   });
 }
+
+export async function searchProducts({
+  query,
+  page = 1,
+  limit = 12,
+}: {
+  query?: string;
+  page?: number;
+  limit?: number;
+}) {
+  const where: Record<string, unknown> = {};
+
+  if (query) {
+    where.OR = [
+      {
+        name: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+      {
+        description: {
+          contains: query,
+          mode: "insensitive",
+        },
+      },
+    ];
+  }
+
+  const [products, total] = await Promise.all([
+    prisma.product.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        category: true,
+        images: true,
+      },
+    }),
+    prisma.product.count({ where }),
+  ]);
+
+  return {
+    products,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
+}
