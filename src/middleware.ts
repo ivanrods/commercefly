@@ -6,6 +6,7 @@ const isProtectedRoute = createRouteMatcher([
   "/checkout(.*)",
   "/profile(.*)",
   "/orders(.*)",
+  "likes(.*)",
   "/admin(.*)",
   "/api/cart(.*)",
 ]);

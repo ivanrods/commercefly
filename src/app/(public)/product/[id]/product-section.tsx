@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
+import LikeButton from "@/app/(public)/components/like-button";
 import {
   Carousel,
   CarouselContent,
@@ -161,13 +162,16 @@ export default function ProductSection({ product }: Props) {
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">
-            <Button
-              className=" cursor-pointer rounded-full"
-              size="lg"
-              onClick={handleAddToCart}
-            >
-              Adicionar ao carrinho
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                className=" cursor-pointer rounded-full flex-1"
+                size="lg"
+                onClick={handleAddToCart}
+              >
+                Adicionar ao carrinho
+              </Button>
+              <LikeButton productId={product.id} showCount={true} />
+            </div>
             <Link href="/">
               <Button variant="outline" className="w-full cursor-pointer">
                 <Store className="me-2 size-4" />

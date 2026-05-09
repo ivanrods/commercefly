@@ -8,7 +8,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Heart } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -52,6 +52,12 @@ export function SiteHeader() {
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
           />
+
+          <Link href="/likes">
+            <Button variant="outline" size="icon">
+              <Heart className="size-4" />
+            </Button>
+          </Link>
 
           <SignedOut>
             <Button asChild size="sm">
