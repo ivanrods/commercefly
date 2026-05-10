@@ -9,7 +9,7 @@ export default function UserLayout({
   return (
     <>
       <SiteHeader />
-      <main className="py-16 px-4">{children}</main>
+      <main className="max-w-screen-2xl mx-auto px-4 py-8">{children}</main>
       <BottomNav />
     </>
   );

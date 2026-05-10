@@ -79,7 +79,7 @@ export default function LikeButton({
         "inline-flex items-center gap-2 rounded-md p-2 transition-all",
         "hover:bg-accent hover:text-accent-foreground",
         "disabled:opacity-50 disabled:cursor-not-allowed",
-        isLiked && "text-red-500",
+        isLiked && "text-balance fill-current",
         className,
       )}
       title={isLiked ? "Remover dos favoritos" : "Adicionar aos favoritos"}

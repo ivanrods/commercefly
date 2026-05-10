@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import {
   addLike,
   removeLike,
@@ -53,6 +54,7 @@ export function useAddLike() {
 
 export function useRemoveLike() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: removeLike,
@@ -67,6 +69,7 @@ export function useRemoveLike() {
       queryClient.invalidateQueries({
         queryKey: ["likeCount"],
       });
+      router.refresh();
       toast.success("Removido dos favoritos", {
         position: "top-center",
       });
