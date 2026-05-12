@@ -8,7 +8,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 
-import { ShoppingBag, Heart } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   const getVariant = (path: string) => {
-    return pathname === path ? "default" : "ghost";
+    return pathname === path ? "outline" : "ghost";
   };
 
   return (
@@ -31,7 +31,7 @@ export function SiteHeader() {
 
         <div className="hidden md:block space-x-4">
           <Link href="/">
-            <Button variant={getVariant("/")}>Home</Button>
+            <Button variant={getVariant("/")}>Início</Button>
           </Link>
 
           <Link href="/product">
@@ -45,6 +45,9 @@ export function SiteHeader() {
           <Link href="/cart">
             <Button variant={getVariant("/cart")}>Carrinho</Button>
           </Link>
+          <Link href="/likes">
+            <Button variant={getVariant("/likes")}>Favoritos</Button>
+          </Link>
         </div>
 
         <div className="flex gap-2 items-center">
@@ -52,12 +55,6 @@ export function SiteHeader() {
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
           />
-
-          <Link href="/likes">
-            <Button variant="outline" size="icon">
-              <Heart className="size-4" />
-            </Button>
-          </Link>
 
           <SignedOut>
             <Button asChild size="sm">
