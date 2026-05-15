@@ -13,9 +13,12 @@ import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Input } from "./ui/input";
+import { useState } from "react";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getVariant = (path: string) => {
     return pathname === path ? "outline" : "ghost";
@@ -51,6 +54,20 @@ export function SiteHeader() {
         </div>
 
         <div className="flex gap-2 items-center">
+          <Input
+            className="hidden md:flex"
+            type="search"
+            placeholder="Pesquisar produtos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                window.location.href = `/search?q=${searchQuery}`;
+              }
+            }}
+            aria-label="Search products"
+          />
+
           <Separator
             orientation="vertical"
             className="mx-2 data-[orientation=vertical]:h-4"
