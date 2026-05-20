@@ -10,7 +10,9 @@ export default function PublicLayout({
   return (
     <>
       <SiteHeader />
-      <main className="max-w-screen-2xl mx-auto px-4 py-8">{children}</main>
+      <main className="max-w-screen-2xl min-h-screen mx-auto px-4 py-8">
+        {children}
+      </main>
       <Footer />
       <BottomNav />
     </>

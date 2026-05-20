@@ -44,6 +44,27 @@ export default async function CategoryPage({ params }: Props) {
       </div>
     );
   }
+  if (category.products.length === 0) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center px-4 ">
+        <div className="flex max-w-md flex-col items-center gap-4 text-center">
+          <div className="bg-muted flex size-16 items-center justify-center rounded-full">
+            <Store className="size-8 text-muted-foreground" />
+          </div>
+          <h2 className="text-2xl font-bold">Nenhum produto encontrado</h2>
+          <p className="text-muted-foreground">
+            Nenhum produto encontrado para a categoria {category.name}.
+          </p>
+          <Link href="/">
+            <Button className="mt-2">
+              Voltar para a loja
+              <MoveRight className="ml-2 size-4" />
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className=" p-4 md:p-0">
