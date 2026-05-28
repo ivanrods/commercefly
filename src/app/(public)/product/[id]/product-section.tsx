@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Star } from "lucide-react";
 import LikeButton from "@/app/(public)/components/like-button";
+import RatingModal from "@/app/(public)/components/rating-modal";
 import {
   Carousel,
   CarouselContent,
@@ -151,14 +152,17 @@ export default function ProductSection({ product }: Props) {
           </div>
           <div className="space-y-2">
             <h3 className="font-bold">Avaliação</h3>
-            <div className="flex space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="text-foreground size-5"
-                  fill={i < product.rating ? "currentColor" : "none"}
-                />
-              ))}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex space-x-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="text-foreground size-5"
+                    fill={i < product.rating ? "currentColor" : "none"}
+                  />
+                ))}
+              </div>
+              <RatingModal productId={product.id} productName={product.name} />
             </div>
           </div>
           <div className="w-full flex flex-col gap-2">
