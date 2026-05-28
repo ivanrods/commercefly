@@ -8,5 +8,6 @@ export default defineConfig({
     environment: "node",
     globals: true,
     globalSetup: ["./scripts/vitest-global-setup.ts"],
+    fileParallelism: false,
   },
 });
