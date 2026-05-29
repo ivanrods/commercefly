@@ -69,6 +69,8 @@ Foi desenvolvido com foco em:
 - Listagem de produtos
 - Filtro por categorias
 - Página de detalhes do produto
+- Marca como favorito / like em produtos
+- Avaliação de produtos com rating por estrelas
 
 ### Carrinho
 
