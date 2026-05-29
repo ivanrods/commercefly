@@ -63,8 +63,8 @@ export default function RatingModal({
           toast.success("Avaliação enviada!", { position: "top-center" });
           setOpen(false);
         },
-        onError: () => {
-          toast.error("Erro ao enviar avaliação", { position: "top-center" });
+        onError: (err) => {
+          toast.error(err.message, { position: "top-center" });
         },
       },
     );

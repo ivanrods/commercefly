@@ -4,7 +4,13 @@ export async function submitRating(productId: string, value: number) {
     body: JSON.stringify({ productId, value }),
   });
 
-  return res.json();
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error ?? "Erro ao enviar avaliação");
+  }
+
+  return data;
 }
 
 export async function getProductRating(productId: string) {

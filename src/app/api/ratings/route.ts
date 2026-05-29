@@ -78,6 +78,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    const purchased = await prisma.orderItem.findFirst({
+      where: {
+        productId,
+        order: {
+          userId: user.id,
+          status: "PAID",
+        },
+      },
+    });
+
+    if (!purchased) {
+      return NextResponse.json(
+        { error: "Você precisa comprar o produto para avaliá-lo" },
+        { status: 403 },
+      );
+    }
+
     await prisma.rating.upsert({
       where: {
         userId_productId: {
