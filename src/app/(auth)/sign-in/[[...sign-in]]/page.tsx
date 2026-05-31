@@ -1,7 +1,6 @@
 "use client";
 import * as Clerk from "@clerk/elements/common";
 import * as SignIn from "@clerk/elements/sign-in";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,9 +24,9 @@ export default function SignInPage() {
               <SignIn.Step name="start">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Faça login</CardTitle>
+                    <CardTitle>Entrar no Acme Co</CardTitle>
                     <CardDescription>
-                      Bem-vindo de volta! Faça login na sua conta.
+                      Bem-vindo de volta! Faça login para continuar
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
@@ -43,7 +42,7 @@ export default function SignInPage() {
                           <Clerk.Loading scope="provider:google">
                             {(isLoading) =>
                               isLoading ? (
-                                <Loader2 className="size-4 animate-spin" />
+                                <Icons.spinner className="size-4 animate-spin" />
                               ) : (
                                 <>
                                   <Icons.google className="mr-2 size-4" />
@@ -75,9 +74,9 @@ export default function SignInPage() {
                           <Clerk.Loading>
                             {(isLoading) => {
                               return isLoading ? (
-                                <Loader2 className="size-4 animate-spin" />
+                                <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                "Continue"
+                                "Continuar"
                               );
                             }}
                           </Clerk.Loading>
@@ -97,10 +96,10 @@ export default function SignInPage() {
               <SignIn.Step name="choose-strategy">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Usar outro método</CardTitle>
+                    <CardTitle>Use outro método</CardTitle>
                     <CardDescription>
-                      Estou com problemas? Você pode usar qualquer uma dessas
-                      opções para fazer login.
+                      Enfrentando problemas? Você pode usar qualquer um desses
+                      métodos para fazer login.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
@@ -110,7 +109,7 @@ export default function SignInPage() {
                         variant="link"
                         disabled={isGlobalLoading}
                       >
-                        Email code
+                        Código de email
                       </Button>
                     </SignIn.SupportedStrategy>
                     <SignIn.SupportedStrategy name="password" asChild>
@@ -119,7 +118,7 @@ export default function SignInPage() {
                         variant="link"
                         disabled={isGlobalLoading}
                       >
-                        Password
+                        Senha
                       </Button>
                     </SignIn.SupportedStrategy>
                   </CardContent>
@@ -130,9 +129,9 @@ export default function SignInPage() {
                           <Clerk.Loading>
                             {(isLoading) => {
                               return isLoading ? (
-                                <Loader2 className="size-4 animate-spin" />
+                                <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                "Go back"
+                                "Voltar"
                               );
                             }}
                           </Clerk.Loading>
@@ -147,15 +146,15 @@ export default function SignInPage() {
                 <SignIn.Strategy name="password">
                   <Card className="w-full sm:w-96">
                     <CardHeader>
-                      <CardTitle>Enter your password</CardTitle>
+                      <CardTitle>Digite sua senha</CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        Welcome back <SignIn.SafeIdentifier />
+                        Bem-vindo de volta <SignIn.SafeIdentifier />
                       </p>
                     </CardHeader>
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="password" className="space-y-2">
                         <Clerk.Label asChild>
-                          <Label>Password</Label>
+                          <Label>Senha</Label>
                         </Clerk.Label>
                         <Clerk.Input type="password" asChild>
                           <Input />
@@ -170,9 +169,9 @@ export default function SignInPage() {
                             <Clerk.Loading>
                               {(isLoading) => {
                                 return isLoading ? (
-                                  <Loader2 className="size-4 animate-spin" />
+                                  <Icons.spinner className="size-4 animate-spin" />
                                 ) : (
-                                  "Continue"
+                                  "Continuar"
                                 );
                               }}
                             </Clerk.Loading>
@@ -180,7 +179,7 @@ export default function SignInPage() {
                         </SignIn.Action>
                         <SignIn.Action navigate="choose-strategy" asChild>
                           <Button type="button" size="sm" variant="link">
-                            Use another method
+                            Use outro método
                           </Button>
                         </SignIn.Action>
                       </div>
@@ -191,12 +190,12 @@ export default function SignInPage() {
                 <SignIn.Strategy name="email_code">
                   <Card className="w-full sm:w-96">
                     <CardHeader>
-                      <CardTitle>Check your email</CardTitle>
+                      <CardTitle>Verifique seu email</CardTitle>
                       <CardDescription>
-                        Enter the verification code sent to your email
+                        Digite o código de verificação enviado para seu email
                       </CardDescription>
                       <p className="text-sm text-muted-foreground">
-                        Welcome back <SignIn.SafeIdentifier />
+                        Bem-vindo de volta <SignIn.SafeIdentifier />
                       </p>
                     </CardHeader>
                     <CardContent className="grid gap-y-4">
@@ -209,7 +208,7 @@ export default function SignInPage() {
                             <Clerk.Input
                               type="otp"
                               autoSubmit
-                              className="flex justify-center has-[:disabled]:opacity-50"
+                              className="flex justify-center has-disabled:opacity-50"
                               render={({ value, status }) => {
                                 return (
                                   <div
@@ -229,7 +228,7 @@ export default function SignInPage() {
                             className="text-muted-foreground"
                             fallback={({ resendableAfter }) => (
                               <Button variant="link" size="sm" disabled>
-                                Didn&apos;t receive a code? Resend (
+                                Não recebeu um código? Reenviar (
                                 <span className="tabular-nums">
                                   {resendableAfter}
                                 </span>
@@ -238,7 +237,7 @@ export default function SignInPage() {
                             )}
                           >
                             <Button variant="link" size="sm">
-                              Didn&apos;t receive a code? Resend
+                              Não recebeu um código? Reenviar
                             </Button>
                           </SignIn.Action>
                         </div>
@@ -251,9 +250,9 @@ export default function SignInPage() {
                             <Clerk.Loading>
                               {(isLoading) => {
                                 return isLoading ? (
-                                  <Loader2 className="size-4 animate-spin" />
+                                  <Icons.spinner className="size-4 animate-spin" />
                                 ) : (
-                                  "Continue"
+                                  "Continuar"
                                 );
                               }}
                             </Clerk.Loading>
@@ -261,7 +260,7 @@ export default function SignInPage() {
                         </SignIn.Action>
                         <SignIn.Action navigate="choose-strategy" asChild>
                           <Button size="sm" variant="link">
-                            Use another method
+                            Use outro método
                           </Button>
                         </SignIn.Action>
                       </div>
