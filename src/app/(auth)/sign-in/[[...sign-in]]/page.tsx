@@ -24,7 +24,7 @@ export default function SignInPage() {
               <SignIn.Step name="start">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Entrar no Acme Co</CardTitle>
+                    <CardTitle>Entrar no CommerceFly</CardTitle>
                     <CardDescription>
                       Bem-vindo de volta! Faça login para continuar
                     </CardDescription>

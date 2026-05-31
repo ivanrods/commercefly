@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -75,7 +73,7 @@ export function SiteHeader() {
 
           <SignedOut>
             <Button asChild size="sm">
-              <SignInButton />
+              <Link href="/sign-in">Entrar</Link>
             </Button>
 
             <Button
@@ -84,7 +82,7 @@ export function SiteHeader() {
               size="sm"
               className="hidden sm:flex"
             >
-              <SignUpButton />
+              <Link href="/sign-up">Cadastrar</Link>
             </Button>
           </SignedOut>
 
