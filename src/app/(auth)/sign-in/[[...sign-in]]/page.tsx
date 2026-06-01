@@ -1,6 +1,7 @@
 "use client";
 import * as Clerk from "@clerk/elements/common";
 import * as SignIn from "@clerk/elements/sign-in";
+import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,7 +25,9 @@ export default function SignInPage() {
               <SignIn.Step name="start">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Entrar no CommerceFly</CardTitle>
+                    <CardTitle className="flex items-center gap-x-2">
+                      <ShoppingBag /> Entrar no CommerceFly
+                    </CardTitle>
                     <CardDescription>
                       Bem-vindo de volta! Faça login para continuar
                     </CardDescription>

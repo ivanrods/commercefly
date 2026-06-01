@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import { ShoppingBag } from "lucide-react";
 import { Separator } from "./ui/separator";
@@ -35,7 +31,7 @@ export function SiteHeader() {
             <Button variant={getVariant("/")}>Início</Button>
           </Link>
 
-          <Link href="/product">
+          <Link href="/product?page=1">
             <Button variant={getVariant("/product")}>Produtos</Button>
           </Link>
 

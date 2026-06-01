@@ -1,6 +1,7 @@
 "use client";
 import * as Clerk from "@clerk/elements/common";
 import * as SignUp from "@clerk/elements/sign-up";
+import { ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +26,9 @@ export default function SignUpPage() {
               <SignUp.Step name="start">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
-                    <CardTitle>Criar sua conta</CardTitle>
+                    <CardTitle className="flex items-center gap-x-2">
+                      <ShoppingBag /> Criar sua conta
+                    </CardTitle>
                     <CardDescription>
                       Bem-vindo! Preencha os detalhes para começar.
                     </CardDescription>
