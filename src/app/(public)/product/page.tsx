@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -9,9 +7,11 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import Link from "next/link";
 import { getProducts } from "@/services/product-service";
+const { categories } = await getCategories({ limit: 0 });
 import { ProductCard } from "../components/product-card";
+import ProductFilter from "../components/product-filter";
+import { getCategories } from "@/services/category-service";
 
 export const metadata = {
   title: "Produtos | Commercefly",
@@ -32,33 +32,14 @@ export default async function ProductPage({
   });
 
   return (
-    <section className=" p-4 md:p-0">
-      <header className="mx-auto mb-12 ">
-        <div className="flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-start">
-          <div className="space-y-4">
-            <div className="inline-flex">
-              <span className="bg-secondary/80 text-secondary-foreground rounded-full px-4 py-1.5 text-sm font-medium">
-                Lista de produtos
-              </span>
-            </div>
-            <div className="space-y-2">
-              <h2 className="text-foreground text-3xl font-bold tracking-tight md:text-4xl">
-                Todos os produtos
-              </h2>
-              <p className="text-muted-foreground max-w-2xl">
-                Lista dos pordutos mais recentes para explorar e adiconar ao
-                carrinho.
-              </p>
-            </div>
-          </div>
-          <Link href="/">
-            <Button className="cursor-pointer whitespace-nowrap" size="lg">
-              Voltar para a página inicial
-              <ArrowRight className="ms-2" />
-            </Button>
-          </Link>
-        </div>
-      </header>
+    <section className=" p-4 md:p-0 space-y-8">
+      <ProductFilter
+        categories={categories.map((category) => ({
+          id: category.id,
+          name: category.name,
+          count: category._count.products,
+        }))}
+      />
 
       <div className="grid grid-cols-1 mb-8 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6 xl:grid-cols-6 ">
         {products.map((product) => {

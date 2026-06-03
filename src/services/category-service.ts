@@ -27,6 +27,11 @@ export async function getCategories({
         name: true,
         slug: true,
         imageUrl: true,
+        _count: {
+          select: {
+            products: true,
+          },
+        },
       },
     }),
     prisma.category.count(),
