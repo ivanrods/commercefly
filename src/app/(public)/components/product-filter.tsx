@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+// hooks do Next.js para navegação e leitura da URL (fonte da verdade dos filtros)
+import { useRouter, useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Search, ChevronDown, X, SlidersHorizontal } from "lucide-react";
 
-const priceRanges = [
+export const priceRanges = [
   { id: "all", label: "Todos os preços", min: 0, max: null },
   { id: "under-25", label: "Abaixo de R$25", min: 0, max: 25 },
   { id: "25-50", label: "R$25 - R$50", min: 25, max: 50 },
@@ -28,86 +30,133 @@ const sortOptions = [
   { id: "price-high", label: "Preço: Do mais alto ao mais baixo" },
   { id: "rating", label: "Avaliação dos clientes" },
 ];
+
 interface ProductFilterProps {
   categories: { id: string; name: string; count: number }[];
+  totalResults: number; // total real de produtos da consulta (vindo do server)
 }
 
-export default function ProductFilter({ categories }: ProductFilterProps) {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
-  const [selectedSort, setSelectedSort] = useState("featured");
-  const [searchQuery, setSearchQuery] = useState("");
+export default function ProductFilter({
+  categories,
+  totalResults,
+}: ProductFilterProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const activeFilters = [];
-  if (selectedCategory !== "all") {
-    const category = categories.find((c) => c.id === selectedCategory);
-    if (category)
-      activeFilters.push({
-        type: "category",
-        label: category.name,
-        value: selectedCategory,
-      });
-  }
-  if (selectedPriceRange !== "all") {
-    const priceRange = priceRanges.find((p) => p.id === selectedPriceRange);
-    if (priceRange)
-      activeFilters.push({
-        type: "price",
-        label: priceRange.label,
-        value: selectedPriceRange,
-      });
-  }
-  if (searchQuery) {
-    activeFilters.push({
-      type: "search",
-      label: `"${searchQuery}"`,
-      value: searchQuery,
-    });
-  }
+  // valores lidos diretamente da URL (fonte única da verdade)
+  const currentCategory = searchParams.get("category") || "all";
+  const currentPriceRange = searchParams.get("price") || "all";
+  const currentSort = searchParams.get("sort") || "featured";
+  const currentSearch = searchParams.get("search") || "";
 
-  const clearFilter = (type: string) => {
-    if (type === "category") setSelectedCategory("all");
-    if (type === "price") setSelectedPriceRange("all");
-    if (type === "search") setSearchQuery("");
+  // estado local apenas para o input de busca (com debounce na URL)
+  const [searchQuery, setSearchQuery] = useState(currentSearch);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  // sincroniza o input quando a URL muda externamente (ex: botão voltar)
+  useEffect(() => {
+    setSearchQuery(currentSearch);
+  }, [currentSearch]);
+
+  // atualiza a URL com um ou mais parâmetros; reseta page para 1
+  const updateURL = useCallback(
+    (updates: Record<string, string | undefined>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
+
+      // qualquer mudança de filtro volta para a primeira página
+      params.delete("page");
+      router.replace(`?${params.toString()}`);
+    },
+    [router, searchParams],
+  );
+
+  // busca com debounce de 300ms para não sobrecarregar a navegação
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      updateURL({ search: value || undefined });
+    }, 400);
   };
 
+  // muda categoria e já navega (sem debounce)
+  const handleCategoryChange = (value: string) => {
+    updateURL({ category: value !== "all" ? value : undefined });
+  };
+
+  // muda faixa de preço e já navega
+  const handlePriceChange = (value: string) => {
+    updateURL({ price: value !== "all" ? value : undefined });
+  };
+
+  // muda ordenação e já navega
+  const handleSortChange = (value: string) => {
+    updateURL({ sort: value !== "featured" ? value : undefined });
+  };
+
+  // constrói lista de filtros ativos baseada na URL (não em estado local)
+  const activeFilters: { type: string; label: string }[] = [];
+  if (currentCategory !== "all") {
+    const category = categories.find((c) => c.id === currentCategory);
+    if (category)
+      activeFilters.push({ type: "category", label: category.name });
+  }
+  if (currentPriceRange !== "all") {
+    const range = priceRanges.find((p) => p.id === currentPriceRange);
+    if (range) activeFilters.push({ type: "price", label: range.label });
+  }
+  if (currentSearch) {
+    activeFilters.push({ type: "search", label: `"${currentSearch}"` });
+  }
+
+  // remove um filtro específico da URL
+  const clearFilter = (type: string) => {
+    if (type === "category") updateURL({ category: undefined });
+    if (type === "price") updateURL({ price: undefined });
+    if (type === "search") {
+      setSearchQuery("");
+      updateURL({ search: undefined });
+    }
+  };
+
+  // limpa todos os filtros (navega para "?" sem parâmetros)
   const clearAllFilters = () => {
-    setSelectedCategory("all");
-    setSelectedPriceRange("all");
     setSearchQuery("");
+    router.replace("?");
   };
 
   return (
     <section className="">
       <div className="mx-auto w-full ">
-        {/* Header */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold tracking-tight text-balance">
             Lista de produtos
           </h2>
           <p className="text-muted-foreground mt-2">
-            Procure por{" "}
-            {categories.find((c) => c.id === selectedCategory)?.count || 1247}{" "}
-            produtos
+            Procure por {totalResults} produtos
           </p>
         </div>
 
-        {/* Horizontal Filter Bar */}
         <div className="mb-6 flex flex-col gap-4">
-          {/* Search and Sort Row */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Search */}
             <div className="relative max-w-md flex-1">
               <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
               <Input
                 placeholder="Buscar produtos..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="pl-10 h-9"
               />
             </div>
 
-            {/* Sort Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -116,7 +165,7 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                 >
                   <SlidersHorizontal data-icon="inline-start" />
                   Ordenar por{" "}
-                  {sortOptions.find((s) => s.id === selectedSort)?.label}
+                  {sortOptions.find((s) => s.id === currentSort)?.label}
                   <ChevronDown data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -124,8 +173,8 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                 {sortOptions.map((option) => (
                   <DropdownMenuItem
                     key={option.id}
-                    onClick={() => setSelectedSort(option.id)}
-                    className={selectedSort === option.id ? "bg-accent" : ""}
+                    onClick={() => handleSortChange(option.id)}
+                    className={currentSort === option.id ? "bg-accent" : ""}
                   >
                     {option.label}
                   </DropdownMenuItem>
@@ -134,9 +183,7 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
             </DropdownMenu>
           </div>
 
-          {/* Category and Price Filter Row */}
           <div className="flex flex-wrap gap-3">
-            {/* Category Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -145,7 +192,7 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                   className="h-8 px-3 text-xs cursor-pointer"
                 >
                   Categoria:{" "}
-                  {categories.find((c) => c.id === selectedCategory)?.name}
+                  {categories.find((c) => c.id === currentCategory)?.name}
                   <ChevronDown data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -153,9 +200,9 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                 {categories.map((category) => (
                   <DropdownMenuItem
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    onClick={() => handleCategoryChange(category.id)}
                     className={
-                      selectedCategory === category.id ? "bg-accent" : ""
+                      currentCategory === category.id ? "bg-accent" : ""
                     }
                   >
                     <div className="flex w-full items-center justify-between">
@@ -172,7 +219,6 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Price Range Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -181,7 +227,7 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                   className="h-8 px-3 text-xs cursor-pointer"
                 >
                   Preço:{" "}
-                  {priceRanges.find((p) => p.id === selectedPriceRange)?.label}
+                  {priceRanges.find((p) => p.id === currentPriceRange)?.label}
                   <ChevronDown data-icon="inline-end" />
                 </Button>
               </DropdownMenuTrigger>
@@ -189,9 +235,9 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
                 {priceRanges.map((range) => (
                   <DropdownMenuItem
                     key={range.id}
-                    onClick={() => setSelectedPriceRange(range.id)}
+                    onClick={() => handlePriceChange(range.id)}
                     className={
-                      selectedPriceRange === range.id ? "bg-accent" : ""
+                      currentPriceRange === range.id ? "bg-accent" : ""
                     }
                   >
                     {range.label}
@@ -201,7 +247,6 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
             </DropdownMenu>
           </div>
 
-          {/* Active Filters */}
           {activeFilters.length > 0 ? (
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-muted-foreground text-sm font-medium">
@@ -237,25 +282,21 @@ export default function ProductFilter({ categories }: ProductFilterProps) {
           ) : null}
         </div>
 
-        {/* Results Summary */}
         <div className="bg-muted/50 rounded-lg border p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <span className="text-sm font-medium">
-                Exibindo{" "}
-                {categories.find((c) => c.id === selectedCategory)?.count ||
-                  1247}{" "}
-                resultados
+                Exibindo {totalResults} resultados
               </span>
-              {searchQuery && (
+              {currentSearch && (
                 <span className="text-muted-foreground text-sm">
-                  para {searchQuery}
+                  para {currentSearch}
                 </span>
               )}
             </div>
             <div className="text-muted-foreground text-xs">
               Ordenado por{" "}
-              {sortOptions.find((s) => s.id === selectedSort)?.label}
+              {sortOptions.find((s) => s.id === currentSort)?.label}
             </div>
           </div>
         </div>

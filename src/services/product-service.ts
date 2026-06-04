@@ -5,6 +5,10 @@ type GetProductsParams = {
   limit?: number;
   category?: string;
   featured?: boolean;
+  search?: string;     // busca textual por nome/descrição
+  priceMin?: number;   // filtro de preço mínimo
+  priceMax?: number;   // filtro de preço máximo
+  sort?: string;       // ordenação: featured, newest, price-low, price-high, rating
 };
 
 export async function getProducts({
@@ -12,20 +16,52 @@ export async function getProducts({
   limit = 8,
   category,
   featured,
+  search,
+  priceMin,
+  priceMax,
+  sort,
 }: GetProductsParams) {
   const isAll = !limit || limit === 0;
 
   const where: Record<string, unknown> = {};
 
+  // filtro por categoria (agora por categoryId, não mais por slug)
   if (category) {
-    where.category = {
-      slug: category,
-    };
+    where.categoryId = category;
   }
 
   if (featured) {
     where.isFeatured = true;
   }
+
+  // busca textual com case insensitive no nome ou descrição
+  if (search) {
+    where.OR = [
+      { name: { contains: search, mode: "insensitive" } },
+      { description: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  // filtro por faixa de preço (gte / lte)
+  if (priceMin !== undefined || priceMax !== undefined) {
+    const priceFilter: Record<string, unknown> = {};
+    if (priceMin !== undefined) priceFilter.gte = priceMin;
+    if (priceMax !== undefined) priceFilter.lte = priceMax;
+    where.price = priceFilter;
+  }
+
+  // orderBy dinâmico conforme o sort selecionado
+  let orderBy:
+    | Record<string, unknown>
+    | Record<string, unknown>[] = { createdAt: "desc" };
+
+  if (sort === "price-low") orderBy = { price: "asc" };
+  else if (sort === "price-high") orderBy = { price: "desc" };
+  else if (sort === "rating") orderBy = { rating: "desc" };
+  else if (sort === "newest") orderBy = { createdAt: "desc" };
+  // "featured" usa array de critérios: primeiro isFeatured, depois createdAt
+  else if (sort === "featured")
+    orderBy = [{ isFeatured: "desc" }, { createdAt: "desc" }];
 
   const [products, total] = await Promise.all([
     prisma.product.findMany({
@@ -36,9 +72,7 @@ export async function getProducts({
             skip: (page - 1) * limit,
             take: limit,
           }),
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy,
       include: {
         category: true,
         images: true,
