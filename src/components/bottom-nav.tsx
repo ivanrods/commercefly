@@ -37,7 +37,7 @@ export function BottomNav() {
               }`}
             >
               <Icon
-                className={`w-5 h-5 mb-1 ${isActive ? "fill-current" : ""}`}
+                className={`w-5 h-5 mb-1 ${isActive ? "text-primary" : "text-muted-foreground"}`}
               />
               {item.label}
             </Link>

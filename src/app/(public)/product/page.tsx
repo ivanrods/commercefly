@@ -1,4 +1,3 @@
-// Suspense é necessário pois ProductFilter usa useSearchParams (client component)
 import { Suspense } from "react";
 import {
   Pagination,
@@ -45,7 +44,8 @@ export default async function ProductPage({
 
   const range = priceRangeMap[price];
   const priceMin = range?.min;
-  const priceMax = range?.max !== undefined && range?.max !== null ? range.max : undefined;
+  const priceMax =
+    range?.max !== undefined && range?.max !== null ? range.max : undefined;
 
   const { products, total, totalPages } = await getProducts({
     page: Number(page),
@@ -73,9 +73,7 @@ export default async function ProductPage({
   return (
     <section className=" p-4 md:p-0 space-y-8">
       <Suspense
-        fallback={
-          <div className="animate-pulse h-40 bg-muted rounded-lg" />
-        }
+        fallback={<div className="animate-pulse h-40 bg-muted rounded-lg" />}
       >
         <ProductFilter
           categories={categories.map((category) => ({
