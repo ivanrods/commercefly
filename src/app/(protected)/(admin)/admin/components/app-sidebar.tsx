@@ -57,7 +57,7 @@ const data = [
   },
   {
     title: "Análise",
-    url: "/admin/products/analytics",
+    url: "/admin/analytics",
     icon: BarChart,
   },
 ];
