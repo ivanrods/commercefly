@@ -4,11 +4,23 @@ import ProductSection from "./product-section";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export const metadata = {
-  title: "Detalhes do Produto | Commercefly",
-  description:
-    "Veja todas as informações, características e benefícios do produto selecionado na Commercefly.",
-};
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const product = await getProductById(id);
+
+  if (!product) {
+    return {
+      title: "Produto não encontrado | Commercefly",
+      description:
+        "O produto que você está procurando não existe ou foi removido.",
+    };
+  }
+
+  return {
+    title: `${product.name} | Commercefly`,
+    description: product.description,
+  };
+}
 
 type Props = {
   params: Promise<{

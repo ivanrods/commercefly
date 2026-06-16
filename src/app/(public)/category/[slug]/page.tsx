@@ -10,11 +10,23 @@ type Props = {
   }>;
 };
 
-export const metadata = {
-  title: "Produtos por Categoria | Commercefly",
-  description:
-    "Explore produtos organizados por categoria na Commercefly e encontre exatamente o que você precisa com qualidade e ótimos preços.",
-};
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
+
+  if (!category) {
+    return {
+      title: "Categoria não encontrada | Commercefly",
+      description:
+        "A categoria que você está procurando não existe ou foi removida.",
+    };
+  }
+
+  return {
+    title: `${category.name} | Commercefly`,
+    description: `As melhores produtos em ${category.name} para você!`,
+  };
+}
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
