@@ -1,0 +1,15 @@
+import { describe, expect, it, vi } from "vitest";
+import { GET } from "./route";
+
+vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
+
+import { auth } from "@clerk/nextjs/server";
+
+describe("GET /api/cart", () => {
+  it("returns null when unauthenticated", async () => {
+    vi.mocked(auth).mockResolvedValue({ userId: null } as any);
+    const res = await GET();
+    const body = await res.json();
+    expect(body).toBeNull();
+  });
+});
