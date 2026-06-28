@@ -1,5 +1,21 @@
 import "@testing-library/jest-dom/vitest";
 
+class MockObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  value: MockObserver,
+});
+
+Object.defineProperty(window, "ResizeObserver", {
+  writable: true,
+  value: MockObserver,
+});
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({
