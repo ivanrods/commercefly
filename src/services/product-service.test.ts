@@ -10,6 +10,7 @@ import {
 
 describe("product-service (leituras públicas)", () => {
   let featuredProductId: string;
+  let calcadosCategoryId: string;
 
   beforeAll(async () => {
     const first = await prisma.product.findFirst({
@@ -21,6 +22,12 @@ describe("product-service (leituras públicas)", () => {
       data: { isFeatured: true },
     });
     featuredProductId = first.id;
+
+    const calcadosCat = await prisma.category.findUnique({
+      where: { slug: "calcados" },
+    });
+    if (!calcadosCat) throw new Error("Seed deve criar categoria calcados");
+    calcadosCategoryId = calcadosCat.id;
   });
 
   afterAll(async () => {
@@ -60,9 +67,9 @@ describe("product-service (leituras públicas)", () => {
     expect(result.total).toBe(totalInDb);
   });
 
-  it("getProducts filtra por categoria (slug)", async () => {
+  it("getProducts filtra por categoria", async () => {
     const { products, total } = await getProducts({
-      category: "calcados",
+      category: calcadosCategoryId,
       limit: 50,
     });
 

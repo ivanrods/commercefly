@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 
 describe("GET /api/cart", () => {
   it("returns null when unauthenticated", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(auth).mockResolvedValue({ userId: null } as any);
     const res = await GET();
     const body = await res.json();

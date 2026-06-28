@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 
 describe("POST /api/cart/decrement", () => {
   it("returns 401 when unauthenticated", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(auth).mockResolvedValue({ userId: null } as any);
     const req = new Request("http://localhost/api/cart/decrement", {
       method: "POST",

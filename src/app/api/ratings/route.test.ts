@@ -16,10 +16,12 @@ import prisma from "@/lib/prisma";
 
 describe("GET /api/ratings", () => {
   it("returns ratings when productId is provided", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(auth).mockResolvedValue({ userId: null } as any);
     vi.mocked(prisma.rating.aggregate).mockResolvedValue({
       _avg: { value: 4.5 },
       _count: { value: 10 },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const req = new Request("http://localhost/api/ratings?productId=p1");
@@ -36,6 +38,7 @@ describe("GET /api/ratings", () => {
 
 describe("POST /api/ratings", () => {
   it("returns 401 when unauthenticated", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.mocked(auth).mockResolvedValue({ userId: null } as any);
     const req = new Request("http://localhost/api/ratings", {
       method: "POST",

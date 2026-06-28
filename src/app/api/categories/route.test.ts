@@ -14,13 +14,22 @@ import { requireAdmin } from "@/lib/auth";
 
 describe("GET /api/categories", () => {
   it("returns categories", async () => {
-    const mockCategories = [{ id: "1", name: "Cat 1", slug: "cat-1" }];
+    const mockCategories = [
+      {
+        id: "1",
+        name: "Cat 1",
+        slug: "cat-1",
+        createdAt: new Date("2026-06-28T17:06:26.694Z"),
+        updatedAt: new Date("2026-06-28T17:06:26.694Z"),
+        imageUrl: null,
+      },
+    ];
     vi.mocked(prisma.category.findMany).mockResolvedValue(mockCategories);
 
     const res = await GET();
     const body = await res.json();
 
-    expect(body).toEqual(mockCategories);
+    expect(body).toEqual(JSON.parse(JSON.stringify(mockCategories)));
   });
 });
 

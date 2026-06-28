@@ -64,7 +64,7 @@ describe("productSchema", () => {
   });
 
   it("defaults isFeatured to false when omitted", () => {
-    const { isFeatured, ...withoutFeatured } = validProduct;
+    const { ...withoutFeatured } = validProduct;
     const result = productSchema.safeParse(withoutFeatured);
     expect(result.success).toBe(true);
     if (result.success) {

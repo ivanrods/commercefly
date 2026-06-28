@@ -13,8 +13,18 @@ describe("HomePage", () => {
     const { getCategories } = await import("@/services/category-service");
     const { getProducts } = await import("@/services/product-service");
 
-    vi.mocked(getCategories).mockResolvedValue({ categories: [] });
-    vi.mocked(getProducts).mockResolvedValue({ products: [] });
+    vi.mocked(getCategories).mockResolvedValue({
+      categories: [],
+      total: 0,
+      page: 1,
+      totalPages: 0,
+    });
+    vi.mocked(getProducts).mockResolvedValue({
+      products: [],
+      total: 0,
+      page: 1,
+      totalPages: 0,
+    });
 
     const Page = await import("./page").then((m) => m.default);
     render(await Page());

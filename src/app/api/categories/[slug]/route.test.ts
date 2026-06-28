@@ -22,6 +22,9 @@ describe("GET /api/categories/[slug]", () => {
       id: "1",
       name: "Cat 1",
       slug: "cat-1",
+      createdAt: new Date("2026-06-28T17:06:27.790Z"),
+      updatedAt: new Date("2026-06-28T17:06:27.790Z"),
+      imageUrl: null,
       products: [],
     };
     vi.mocked(prisma.category.findUnique).mockResolvedValue(mockCategory);
@@ -32,7 +35,7 @@ describe("GET /api/categories/[slug]", () => {
     });
     const body = await res.json();
 
-    expect(body).toEqual(mockCategory);
+    expect(body).toEqual(JSON.parse(JSON.stringify(mockCategory)));
   });
 });
 
