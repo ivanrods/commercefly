@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@/app/generated/prisma/client";
 import { formatCurrency } from "@/helpers/format-currency";
 
 type OrderWithDetails = Prisma.OrderGetPayload<{
