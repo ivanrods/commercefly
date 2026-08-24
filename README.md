@@ -191,6 +191,7 @@ CLOUDINARY_API_SECRET=
 ### 3. Rodar migrations
 
 ```bash
+npm run db:up
 npx prisma migrate dev
 npm run dev
 ```
