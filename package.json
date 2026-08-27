@@ -13,6 +13,7 @@
     "test:coverage": "NODE_ENV=test vitest run --coverage",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate"
   },
   "prisma": {

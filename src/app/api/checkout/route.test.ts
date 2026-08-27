@@ -1,4 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/stripe", () => ({
+  stripe: { checkout: { sessions: { create: vi.fn() } } },
+}));
+
 import { POST } from "./route";
 
 vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));

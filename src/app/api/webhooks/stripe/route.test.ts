@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { POST } from "./route";
+
+vi.mock("@/lib/stripe", () => ({
+  stripe: { webhooks: { constructEvent: vi.fn() } },
+}));
 
 vi.mock("@/lib/prisma", () => ({
   default: {
@@ -8,6 +11,8 @@ vi.mock("@/lib/prisma", () => ({
     cartItem: { deleteMany: vi.fn() },
   },
 }));
+
+import { POST } from "./route";
 
 describe("POST /api/webhooks/stripe", () => {
   it("returns 400 when signature is missing", async () => {
