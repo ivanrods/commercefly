@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 export async function POST() {
   const { userId: clerkId } = await auth();
@@ -36,6 +36,8 @@ export async function POST() {
   if (!cart || cart.items.length === 0) {
     return NextResponse.json({ error: "Cart vazio" });
   }
+
+  const stripe = getStripe();
 
   const line_items = cart.items.map((item) => ({
     price_data: {

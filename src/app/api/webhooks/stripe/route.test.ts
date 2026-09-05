@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("@/lib/stripe", () => ({
-  stripe: { webhooks: { constructEvent: vi.fn() } },
+  getStripe: () => ({ webhooks: { constructEvent: vi.fn() } }),
 }));
 
 vi.mock("@/lib/prisma", () => ({

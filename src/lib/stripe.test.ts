@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./stripe", () => ({
-  stripe: {},
+  getStripe: () => ({}),
 }));
 
-import { stripe } from "./stripe";
+import { getStripe } from "./stripe";
 
 describe("stripe", () => {
   it("exports a Stripe instance", () => {
-    expect(stripe).toBeDefined();
+    expect(getStripe()).toBeDefined();
   });
 });
